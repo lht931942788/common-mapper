@@ -1,111 +1,213 @@
-### 简介
+### Brief introduction
 
-mybatis通用mapper
 
-### 快速使用
-+ 目前没有发布到中心仓库，可以把项目克隆下来，用maven编译为jar包使用maven本地引入。
+
+Mybatis universal mapper
+
+
+
+### Quick use
+
++At present, it is not published to the central warehouse. You can clone the project, compile it into jar package with maven, and introduce it locally with Maven.
+
 ```xml
-<dependency>
-    <groupId>%groupId%</groupId>
-    <artifactId>%artifactId%</artifactId>
-    <version>%version%</version>
-    <scope>system</scope>
-    <systemPath>${project.basedir}\src\main\libs\%jarName%.jar</systemPath>
-</dependency>
-```
-**如果使用通用service需要在spring boot启动类上加入@ComponentScan("cn.org.rookie.tools")**
 
-+ 创建实体
+<dependency>
+
+<groupId>%groupId%</groupId>
+
+<artifactId>%artifactId%</artifactId>
+
+<version>%version%</version>
+
+<scope>system</scope>
+
+<systemPath>${project.basedir}\src\main\libs\%jarName%.jar</systemPath>
+
+</dependency>
+
+```
+
+**If you want to use the general service, you need to add @ componentscan ("CN. Org. Rookie. Tools") to the spring boot class**
+
+
+
++Create entity
+
 ```java
+
 @Table("demo")
+
 public class Demo {
 
-    @Primary
-    private String id;
 
-    private String name;
 
-    private String birthday;
+@Primary
 
-    private Date createTime;
+private String id;
 
-    public String getId() {
-        return id;
-    }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
-    public String getName() {
-        return name;
-    }
+private String name;
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
-    public String getBirthday() {
-        return birthday;
-    }
 
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
+private String birthday;
 
-    public Date getCreateTime() {
-        return createTime;
-    }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+
+private Date createTime;
+
+
+
+public String getId() {
+
+Return ID;
+
 }
+
+
+
+public void setId(String id) {
+
+this.id = id;
+
+}
+
+
+
+public String getName() {
+
+Return name;
+
+}
+
+
+
+public void setName(String name) {
+
+this.name = name;
+
+}
+
+
+
+public String getBirthday() {
+
+return birthday;
+
+}
+
+
+
+public void setBirthday(String birthday) {
+
+this.birthday = birthday;
+
+}
+
+
+
+public Date getCreateTime() {
+
+return createTime;
+
+}
+
+
+
+public void setCreateTime(Date createTime) {
+
+this.createTime = createTime;
+
+}
+
+}
+
 
 ```
 
-+ 创建mapper接口继承BaseMapper
+
+
++Create mapper interface to inherit basemapper
+
 ```java
+
 @Repository
+
 public interface DemoMapper extends BaseMapper<Demo, String> {
+
 }
+
 ```
 
-+ 创建测试类
+
+
++Create test class
+
 ```java
+
 @RunWith(SpringRunner.class)
+
 @SpringBootTest
+
 public class CommonMapperApplicationTests {
 
-    @Autowired
-    DemoMapper demoMapper;
 
-    @Test
-    public void contextLoads() {
-        demoMapper.select();
-    }
+
+@Autowired
+
+DemoMapper demoMapper;
+
+
+
+@Test
+
+public void contextLoads() {
+
+demoMapper.select();
 
 }
+
+
+
+}
+
 ```
 
-### 注解
 
-#### **@Table** 配置实体对应表
-+ value：数据库表名
 
-#### **@Column** 配置实体属性和对应字段信息
-+ value：对应数据库字段，如果不配默认为属性名称，驼峰命名会转为下划线命名
-+ order：是否排序
-+ orderType：排序方式，默认desc
+Annotation of the Chinese characters
 
-#### **@Primary** 配置属性为主键
-+ value：属性是主键
 
-#### **@JoinColumn** 配置关联表
-+ tableName：要关联的表
-+ column：要展示关联表中的哪个字段
-+ targets：当前实体对应表的字段
-+ relations：要关联的表中的字段
-**注：targets和relations的数量要相等，且对应关联关系字段顺序要相同**
+#### **@Table** configure entity correspondence table
 
-#### **@Transient** 配置属性不在数据库中
++Value: database table name
+
+
+
+#### **@Column** configure entity properties and corresponding field information
+
++ Value: the corresponding database field. If it is not configured with the default attribute name, the hump name will be changed to underline name
+
+
+#### **@Primary** configure the property as primary key
+
++ Value: property is primary key
+
+
+
+#### **@Joincolumn** configure association table
+
++ Tablename: table to associate
+
++ Column: which field in the associated table to show
++ relations: field relations
+
+#### **@Association** Field Association
+
++ Target: field in the corresponding table of the current entity
+
++ Association: corresponding field in association table
+
+#### **@Transient** configuration property is not in the database
