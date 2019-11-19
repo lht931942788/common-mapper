@@ -13,17 +13,11 @@ Mybatis universal mapper
 ```xml
 
 <dependency>
-
-<groupId>%groupId%</groupId>
-
-<artifactId>%artifactId%</artifactId>
-
-<version>%version%</version>
-
-<scope>system</scope>
-
-<systemPath>${project.basedir}\src\main\libs\%jarName%.jar</systemPath>
-
+  <groupId>%groupId%</groupId>
+    <artifactId>%artifactId%</artifactId>
+    <version>%version%</version>
+    <scope>system</scope>
+  <systemPath>${project.basedir}\src\main\libs\%jarName%.jar</systemPath>
 </dependency>
 
 ```
@@ -32,7 +26,7 @@ Mybatis universal mapper
 
 
 
-+Create entity
++ Create entity
 
 ```java
 
@@ -129,7 +123,7 @@ this.createTime = createTime;
 
 
 
-+Create mapper interface to inherit basemapper
++ Create mapper interface to inherit basemapper
 
 ```java
 
@@ -143,34 +137,25 @@ public interface DemoMapper extends BaseMapper<Demo, String> {
 
 
 
-+Create test class
++ Create test class
 
 ```java
 
 @RunWith(SpringRunner.class)
-
 @SpringBootTest
-
 public class CommonMapperApplicationTests {
-
-
 
 @Autowired
 
 DemoMapper demoMapper;
 
-
-
 @Test
 
 public void contextLoads() {
 
-demoMapper.select();
-
-}
-
-
-
+  demoMapper.select();
+  
+  }
 }
 
 ```
