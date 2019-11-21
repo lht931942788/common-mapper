@@ -59,18 +59,23 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T, E>, T, E> implemen
     }
 
     @Override
+    public T selectOne(Wrapper wrapper) {
+        return getMapper().selectOne(wrapper);
+    }
+
+    @Override
     public List<T> select() {
         return getMapper().select();
     }
 
     @Override
-    public List<T> selectList(T entity) {
+    public List<T> select(T entity) {
         Wrapper wrapper = Wrapper.build();
         return getMapper().selectList(wrapper);
     }
 
     @Override
-    public List<T> selectList(Wrapper wrapper) {
+    public List<T> select(Wrapper wrapper) {
         return getMapper().selectList(wrapper);
     }
 

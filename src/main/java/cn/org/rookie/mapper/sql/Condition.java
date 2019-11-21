@@ -44,4 +44,13 @@ public class Condition {
     public void setAnd(boolean and) {
         isAnd = and;
     }
+
+    public String build() {
+        if (isAnd) {
+            return " and " + getColumnName() + getSql().replace("%s", getPrefix() + "{wrapper.params." + getColumnName() + "}");
+        } else {
+            return " or " + getColumnName() + getSql().replace("%s", getPrefix() + "{wrapper.params." + getColumnName() + "}");
+        }
+    }
+
 }

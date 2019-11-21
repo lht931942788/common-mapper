@@ -90,6 +90,10 @@ public class Wrapper {
         return addCondition(columnName, param, " in (%s)", false);
     }
 
+    public Wrapper isNull(String columnName) {
+        return addCondition(columnName, null, " is null", false);
+    }
+
     public Wrapper order(String order) {
         this.orders.add(order);
         return this;
@@ -103,6 +107,14 @@ public class Wrapper {
     public Wrapper or() {
         isAnd = false;
         return this;
+    }
+
+    public String structure() {
+        StringBuilder sqlBuilder = new StringBuilder();
+        for (Condition condition : conditions) {
+            sqlBuilder.append(condition.build());
+        }
+        return sqlBuilder.toString();
     }
 }
 

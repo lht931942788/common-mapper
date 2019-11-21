@@ -1,13 +1,11 @@
 package cn.org.rookie.mapper.provider;
 
-import cn.org.rookie.mapper.sql.SQL;
+import cn.org.rookie.mapper.sql.SQLMaker;
 import cn.org.rookie.mapper.sql.SQLContext;
 import cn.org.rookie.mapper.sql.Wrapper;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
 import java.lang.reflect.ParameterizedType;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings("unused")
 public class BaseMapperProvider {
@@ -21,7 +19,13 @@ public class BaseMapperProvider {
     }
 
     public String delete(Wrapper wrapper, ProviderContext context) {
-        return getSQL(context).delete().where(wrapper).build();
+        String sql;
+        if (wrapper != null) {
+            sql = getSQL(context).delete().where(wrapper.structure()).build();
+        } else {
+            sql = getSQL(context).delete().build();
+        }
+        return sql;
     }
 
     public String updateByPrimary(Object o, ProviderContext context) {
@@ -29,11 +33,23 @@ public class BaseMapperProvider {
     }
 
     public String update(Object entity, Wrapper wrapper, ProviderContext context) {
-        return getSQL(context).update().where(wrapper).build();
+        String sql;
+        if (wrapper != null) {
+            sql = getSQL(context).update().where(wrapper.structure()).build();
+        } else {
+            sql = getSQL(context).update().build();
+        }
+        return sql;
     }
 
     public String selectOne(Wrapper wrapper, ProviderContext context) {
-        return getSQL(context).select().where(wrapper).build();
+        String sql;
+        if (wrapper != null) {
+            sql = getSQL(context).select().where(wrapper.structure()).build();
+        } else {
+            sql = getSQL(context).select().build();
+        }
+        return sql;
     }
 
     public String selectByPrimary(Object o, ProviderContext context) {
@@ -41,18 +57,24 @@ public class BaseMapperProvider {
     }
 
     public String selectList(Wrapper wrapper, ProviderContext context) {
-        return getSQL(context).select().where(wrapper).build();
+        String sql;
+        if (wrapper != null) {
+            sql = getSQL(context).select().where(wrapper.structure()).build();
+        } else {
+            sql = getSQL(context).select().build();
+        }
+        return sql;
     }
 
     private Class getEntityType(ProviderContext context) {
         return (Class) ((ParameterizedType) (context.getMapperType().getGenericInterfaces()[0])).getActualTypeArguments()[0];
     }
 
-    private SQL getSQL(ProviderContext context) {
+    private SQLMaker getSQL(ProviderContext context) {
         String name = getEntityType(context).getName();
-        SQL sql = SQLContext.get(name);
+        SQLMaker sql = SQLContext.get(name);
         if (sql == null) {
-            sql = new SQL(getEntityType(context));
+            sql = new SQLMaker(getEntityType(context));
             SQLContext.put(name, sql);
         }
         return sql;

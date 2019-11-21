@@ -17,9 +17,11 @@ public interface BaseService<T, E> extends ApplicationContextAware {
 
     T selectById(E id);
 
+    T selectOne(Wrapper wrapper);
+
     List<T> select();
 
-    List<T> selectList(T entity);
+    List<T> select(T entity);
 
-    List<T> selectList(Wrapper wrapper);
+    List<T> select(Wrapper wrapper);
 }
