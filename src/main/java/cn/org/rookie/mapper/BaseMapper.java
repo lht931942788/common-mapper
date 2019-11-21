@@ -24,7 +24,7 @@ public interface BaseMapper<T, E> {
     int update(@Param("entity") T entity, @Param("wrapper") Wrapper wrapper);
 
     @SelectProvider(type = BaseMapperProvider.class, method = "selectByPrimary")
-    T selectByPrimary(E id);
+    T selectByPrimary(@Param("id") E id);
 
     @SelectProvider(type = BaseMapperProvider.class, method = "selectOne")
     T selectOne(@Param("wrapper") Wrapper wrapper);

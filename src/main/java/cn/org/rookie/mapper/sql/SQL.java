@@ -92,7 +92,7 @@ public class SQL {
     }
 
     public SQL byPrimary() {
-        where = tableInfo.getTableName() + "." + tableInfo.getPrimaryInfo().getColumnName() + " = #{id}";
+        where = "where " + tableInfo.getTableName() + "." + tableInfo.getPrimaryInfo().getColumnName() + " = #{id}";
         return this;
     }
 

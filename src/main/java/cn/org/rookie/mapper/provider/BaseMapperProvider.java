@@ -1,6 +1,7 @@
 package cn.org.rookie.mapper.provider;
 
 import cn.org.rookie.mapper.sql.SQL;
+import cn.org.rookie.mapper.sql.SQLContext;
 import cn.org.rookie.mapper.sql.Wrapper;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
@@ -10,7 +11,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings("unused")
 public class BaseMapperProvider {
-    private static final Map<String, SQL> SQL_MAP = new ConcurrentHashMap<>();
 
     public String insert(ProviderContext context) {
         return getSQL(context).insert().build();
@@ -37,7 +37,7 @@ public class BaseMapperProvider {
     }
 
     public String selectByPrimary(Object o, ProviderContext context) {
-        return getSQL(context).byPrimary().build();
+        return getSQL(context).select().byPrimary().build();
     }
 
     public String selectList(Wrapper wrapper, ProviderContext context) {
@@ -49,11 +49,11 @@ public class BaseMapperProvider {
     }
 
     private SQL getSQL(ProviderContext context) {
-        String name = context.getMapperType().getName() + "." + context.getMapperMethod().getName();
-        SQL sql = SQL_MAP.get(name);
+        String name = getEntityType(context).getName();
+        SQL sql = SQLContext.get(name);
         if (sql == null) {
             sql = new SQL(getEntityType(context));
-            SQL_MAP.put(name, sql);
+            SQLContext.put(name, sql);
         }
         return sql;
     }
