@@ -1,6 +1,6 @@
 ### 简介
 
-mybatis通用mapper
+Mybatis通用mapper，支持简单的表关系注释配置，无侵入，无需多余配置，只需要继承基础接口即可
 
 ### 快速使用
 + 目前没有发布到中心仓库，可以把项目克隆下来，用maven编译为jar包使用maven本地引入。
@@ -13,7 +13,6 @@ mybatis通用mapper
     <systemPath>${project.basedir}\src\main\libs\%jarName%.jar</systemPath>
 </dependency>
 ```
-**如果使用通用service需要在spring boot启动类上加入@ComponentScan("cn.org.rookie.tools")**
 
 + 创建实体
 ```java
