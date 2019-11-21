@@ -104,8 +104,9 @@ public class CommonMapperApplicationTests {
 #### **@JoinColumn** 配置关联表
 + tableName：要关联的表
 + column：要展示关联表中的哪个字段
-+ targets：当前实体对应表的字段
-+ relations：要关联的表中的字段
-**注：targets和relations的数量要相等，且对应关联关系字段顺序要相同**
-
++ relations：字段关系
+#### **@Association** 字段关联关系
++ target：当前实体对应表中字段
++ association：关联表中对应字段
 #### **@Transient** 配置属性不在数据库中
+**如需分页建议用Pagehelper**
