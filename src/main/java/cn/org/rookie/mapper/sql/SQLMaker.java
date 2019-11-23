@@ -14,10 +14,6 @@ import java.util.Map;
 
 public class SQLMaker {
 
-    private static final String INSERT = "insert into %s (%s) values (%s)";
-    private static final String DELETE = "delete from %s";
-    private static final String UPDATE = "update %s set %s";
-    private static final String SELECT = "select %s from %s %s";
     private final Map<String, String> SQL_MAP = new HashMap<>();
     private final TableInfo tableInfo;
     private final Class<?> type;
