@@ -26,13 +26,13 @@ public interface BaseMapper<T, E> {
     @SelectProvider(type = BaseMapperProvider.class, method = "selectByPrimary")
     T selectByPrimary(@Param("id") E id);
 
-    @SelectProvider(type = BaseMapperProvider.class, method = "selectOne")
+    @SelectProvider(type = BaseMapperProvider.class, method = "select")
     T selectOne(@Param("wrapper") Wrapper wrapper);
 
-    @SelectProvider(type = BaseMapperProvider.class, method = "selectList")
+    @SelectProvider(type = BaseMapperProvider.class, method = "select")
     List<T> select();
 
-    @SelectProvider(type = BaseMapperProvider.class, method = "selectList")
+    @SelectProvider(type = BaseMapperProvider.class, method = "select")
     List<T> selectList(@Param("wrapper") Wrapper wrapper);
 
 }

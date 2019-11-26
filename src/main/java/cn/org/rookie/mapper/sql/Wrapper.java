@@ -1,5 +1,8 @@
 package cn.org.rookie.mapper.sql;
 
+import cn.org.rookie.mapper.where.*;
+import cn.org.rookie.mapper.where.condition.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,16 +26,8 @@ public class Wrapper {
         return params;
     }
 
-    public void setParams(Map<String, Object> params) {
-        this.params = params;
-    }
-
     public List<Condition> getConditions() {
         return conditions;
-    }
-
-    public void setConditions(List<Condition> conditions) {
-        this.conditions = conditions;
     }
 
     public List<String> getOrder() {
@@ -43,55 +38,60 @@ public class Wrapper {
         this.orders = orders;
     }
 
-    private Wrapper addCondition(String columnName, Object param, String sql) {
-        addCondition(columnName, param, sql, true);
-        return this;
-    }
-
-    private Wrapper addCondition(String columnName, Object param, String sql, boolean isSharp) {
-        Condition condition = new Condition(columnName, sql, isAnd);
-        conditions.add(condition);
-        params.put(columnName, param);
+    private Wrapper addCondition(SingleCondition condition, boolean isSharp) {
         if (!isSharp) {
             condition.setPrefix("$");
         }
+        condition.setIsAnd(isAnd);
+        conditions.add(condition);
+        return this;
+    }
+
+    private void putParam(String columnName, Object param) {
+        params.put(columnName, param);
+    }
+
+    private Wrapper addCondition(Condition condition) {
+        conditions.add(condition);
         return this;
     }
 
     public Wrapper eq(String columnName, Object param) {
-        return addCondition(columnName, param, " = %s");
+        putParam(columnName, param);
+        return addCondition(new Eq(columnName), true);
     }
 
     public Wrapper notEq(String columnName, Object param) {
-        return addCondition(columnName, param, " != %s");
+        params.put(columnName, param);
+        return addCondition(new NotEq(columnName), true);
     }
 
     public Wrapper lt(String columnName, Object param) {
-        return addCondition(columnName, param, " &lt; %s");
+        params.put(columnName, param);
+        return addCondition(new Lt(columnName), true);
     }
 
     public Wrapper gt(String columnName, Object param) {
-        return addCondition(columnName, param, " &gt; %s");
+        params.put(columnName, param);
+        return addCondition(new Gt(columnName), true);
     }
 
     public Wrapper like(String columnName, Object param) {
-        return addCondition(columnName, param, " like '%%s%'", false);
-    }
-
-    public Wrapper leftLike(String columnName, Object param) {
-        return addCondition(columnName, param, " like '%%s'", false);
-    }
-
-    public Wrapper rightLike(String columnName, Object param) {
-        return addCondition(columnName, param, " like '%s%'", false);
+        params.put(columnName, param);
+        return addCondition(new Lt(columnName), false);
     }
 
     public Wrapper in(String columnName, Object param) {
-        return addCondition(columnName, param, " in (%s)", false);
+        params.put(columnName, param);
+        return addCondition(new IsNull(columnName));
     }
 
     public Wrapper isNull(String columnName) {
-        return addCondition(columnName, null, " is null", false);
+        return addCondition(new IsNull(columnName));
+    }
+
+    public Wrapper isNotNull(String columnName) {
+        return addCondition(new IsNotNull(columnName));
     }
 
     public Wrapper order(String order) {
@@ -107,14 +107,6 @@ public class Wrapper {
     public Wrapper or() {
         isAnd = false;
         return this;
-    }
-
-    public String structure() {
-        StringBuilder sqlBuilder = new StringBuilder();
-        for (Condition condition : conditions) {
-            sqlBuilder.append(condition.build());
-        }
-        return sqlBuilder.toString();
     }
 }
 
