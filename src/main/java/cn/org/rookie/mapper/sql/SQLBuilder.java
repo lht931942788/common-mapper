@@ -69,15 +69,17 @@ public class SQLBuilder {
     }
 
     public SQLBuilder where(Wrapper wrapper) {
-        List<Condition> conditions = wrapper.getConditions();
-        for (Condition condition : conditions) {
-            if (condition.isAnd()) {
-                sql.AND();
+        if (wrapper != null) {
+            List<Condition> conditions = wrapper.getConditions();
+            for (Condition condition : conditions) {
+                if (condition.isAnd()) {
+                    sql.AND();
+                }
+                if (!condition.isAnd()) {
+                    sql.OR();
+                }
+                sql.WHERE(condition.render());
             }
-            if (!condition.isAnd()) {
-                sql.OR();
-            }
-            sql.WHERE(condition.render());
         }
         return this;
     }

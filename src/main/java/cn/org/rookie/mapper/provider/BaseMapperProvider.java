@@ -34,7 +34,7 @@ public class BaseMapperProvider {
     }
 
     public String select(Wrapper wrapper, ProviderContext context) {
-        return getSqlBuilder(context).delete().where(wrapper).build();
+        return getSqlBuilder(context).select().where(wrapper).build();
     }
 
     public String selectByPrimary(Object o, ProviderContext context) {
