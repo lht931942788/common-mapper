@@ -4,7 +4,7 @@ import cn.org.rookie.mapper.annotation.JoinColumn;
 import cn.org.rookie.mapper.annotation.Primary;
 import cn.org.rookie.mapper.annotation.Table;
 import cn.org.rookie.mapper.annotation.Transient;
-import cn.org.rookie.tools.StringUtils;
+import cn.org.rookie.utils.StringUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;

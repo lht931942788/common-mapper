@@ -4,10 +4,8 @@ import cn.org.rookie.mapper.table.AssociationInfo;
 import cn.org.rookie.mapper.table.ColumnInfo;
 import cn.org.rookie.mapper.table.JoinColumnInfo;
 import cn.org.rookie.mapper.table.TableInfo;
-import cn.org.rookie.tools.StringUtils;
 import org.apache.ibatis.jdbc.SQL;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

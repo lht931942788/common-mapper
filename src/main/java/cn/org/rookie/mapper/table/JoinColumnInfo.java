@@ -2,7 +2,7 @@ package cn.org.rookie.mapper.table;
 
 import cn.org.rookie.mapper.annotation.Association;
 import cn.org.rookie.mapper.annotation.JoinColumn;
-import cn.org.rookie.tools.StringUtils;
+import cn.org.rookie.utils.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

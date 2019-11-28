@@ -1,4 +1,4 @@
-package cn.org.rookie.tools;
+package cn.org.rookie.utils;
 
 import java.util.Arrays;
 import java.util.Collection;

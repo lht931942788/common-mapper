@@ -3,7 +3,7 @@ package cn.org.rookie.service.impl;
 import cn.org.rookie.mapper.BaseMapper;
 import cn.org.rookie.mapper.sql.Wrapper;
 import cn.org.rookie.service.BaseService;
-import cn.org.rookie.tools.StringUtils;
+import cn.org.rookie.utils.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 
