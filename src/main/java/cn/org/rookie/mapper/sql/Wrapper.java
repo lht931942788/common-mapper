@@ -1,7 +1,7 @@
 package cn.org.rookie.mapper.sql;
 
-import cn.org.rookie.mapper.where.*;
-import cn.org.rookie.mapper.where.condition.*;
+import cn.org.rookie.mapper.sql.where.*;
+import cn.org.rookie.mapper.sql.where.condition.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;

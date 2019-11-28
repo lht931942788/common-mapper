@@ -1,6 +1,6 @@
-package cn.org.rookie.mapper.where.condition;
+package cn.org.rookie.mapper.sql.where.condition;
 
-import cn.org.rookie.mapper.where.Condition;
+import cn.org.rookie.mapper.sql.where.Condition;
 
 public class IsNotNull extends Condition {
 

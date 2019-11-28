@@ -1,4 +1,4 @@
-package cn.org.rookie.mapper.where;
+package cn.org.rookie.mapper.sql.where;
 
 public abstract class SingleCondition extends Condition {
 

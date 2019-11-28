@@ -1,6 +1,6 @@
-package cn.org.rookie.mapper.where.condition;
+package cn.org.rookie.mapper.sql.where.condition;
 
-import cn.org.rookie.mapper.where.SingleCondition;
+import cn.org.rookie.mapper.sql.where.SingleCondition;
 
 public class Gt extends SingleCondition {
     public Gt(String columnName) {
