@@ -4,7 +4,7 @@ import cn.org.rookie.mapper.sql.where.SingleCondition;
 
 public class Like extends SingleCondition {
 
-    public Like(String columnName, boolean isAnd) {
+    public Like(String columnName) {
         super(columnName);
     }
 

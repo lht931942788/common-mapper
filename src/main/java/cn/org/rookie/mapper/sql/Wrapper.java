@@ -1,6 +1,7 @@
 package cn.org.rookie.mapper.sql;
 
-import cn.org.rookie.mapper.sql.where.*;
+import cn.org.rookie.mapper.sql.where.Condition;
+import cn.org.rookie.mapper.sql.where.SingleCondition;
 import cn.org.rookie.mapper.sql.where.condition.*;
 
 import java.util.ArrayList;
@@ -78,7 +79,7 @@ public class Wrapper {
 
     public Wrapper like(String columnName, Object param) {
         params.put(columnName, param);
-        return addCondition(new Lt(columnName), false);
+        return addCondition(new Like(columnName), false);
     }
 
     public Wrapper in(String columnName, Object param) {

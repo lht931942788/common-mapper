@@ -1,10 +1,10 @@
 package cn.org.rookie.mapper.sql;
 
+import cn.org.rookie.mapper.sql.where.Condition;
 import cn.org.rookie.mapper.table.AssociationInfo;
 import cn.org.rookie.mapper.table.ColumnInfo;
 import cn.org.rookie.mapper.table.JoinColumnInfo;
 import cn.org.rookie.mapper.table.TableInfo;
-import cn.org.rookie.mapper.sql.where.Condition;
 import org.apache.ibatis.jdbc.SQL;
 
 import java.util.List;
