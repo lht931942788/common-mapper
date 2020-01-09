@@ -48,6 +48,7 @@ public class JoinTableInterceptor implements Interceptor, ApplicationContextAwar
                         list.forEach(o -> {
                             try {
                                 field.set(o, baseMapper.select());
+                                //TODO 加查询条件
                             } catch (IllegalAccessException e) {
                                 e.printStackTrace();
                             }
