@@ -36,8 +36,7 @@ public class JoinTableInterceptor implements Interceptor, ApplicationContextAwar
                 MappedStatement mappedStatement = (MappedStatement) args[0];
                 String id = mappedStatement.getId();
                 String resource = id.substring(0, id.lastIndexOf("."));
-                Class<?> aClass = Class.forName(resource);
-                Class type = (Class) ((ParameterizedType) (aClass.getGenericInterfaces()[0])).getActualTypeArguments()[0];
+                Class type = (Class) ((ParameterizedType) (Class.forName(resource).getGenericInterfaces()[0])).getActualTypeArguments()[0];
                 Field[] fields = type.getDeclaredFields();
                 List list = (List) result;
                 for (Field field : fields) {
@@ -47,8 +46,8 @@ public class JoinTableInterceptor implements Interceptor, ApplicationContextAwar
                         BaseMapper baseMapper = (BaseMapper) applicationContext.getBean(joinTable.mappedClass());
                         list.forEach(o -> {
                             try {
-                                field.set(o, baseMapper.select());
                                 //TODO 加查询条件
+                                field.set(o, baseMapper.select());
                             } catch (IllegalAccessException e) {
                                 e.printStackTrace();
                             }
