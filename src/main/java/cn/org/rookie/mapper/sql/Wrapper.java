@@ -53,6 +53,7 @@ public class Wrapper {
     }
 
     private Wrapper addCondition(Condition condition) {
+        condition.setIsAnd(isAnd);
         conditions.add(condition);
         return this;
     }
@@ -84,7 +85,7 @@ public class Wrapper {
 
     public Wrapper in(String columnName, Object param) {
         params.put(columnName, param);
-        return addCondition(new IsNull(columnName));
+        return addCondition(new In(columnName));
     }
 
     public Wrapper isNull(String columnName) {
