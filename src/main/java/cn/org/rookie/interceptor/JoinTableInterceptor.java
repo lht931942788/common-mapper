@@ -2,6 +2,7 @@ package cn.org.rookie.interceptor;
 
 import cn.org.rookie.mapper.BaseMapper;
 import cn.org.rookie.mapper.annotation.JoinTable;
+import cn.org.rookie.mapper.sql.Wrapper;
 import cn.org.rookie.utils.JoinTableFlag;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -18,8 +19,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.Properties;
 
-@Intercepts({@Signature(type = Executor.class, method = "query",
-        args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class})})
+@Intercepts({@Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class})})
 public class JoinTableInterceptor implements Interceptor, ApplicationContextAware {
 
     private ApplicationContext applicationContext;
@@ -44,10 +44,18 @@ public class JoinTableInterceptor implements Interceptor, ApplicationContextAwar
                     if (joinTable != null) {
                         field.setAccessible(true);
                         BaseMapper baseMapper = (BaseMapper) applicationContext.getBean(joinTable.mappedClass());
-                        list.forEach(o -> {
+                        list.forEach(row -> {
                             try {
                                 //TODO 加查询条件
-                                field.set(o, baseMapper.select());
+                                Wrapper wrapper = Wrapper.build();
+                                try {
+                                    Field f = row.getClass().getField("");
+                                    Object obj = f.get(row);
+                                    wrapper.eq(f.getName(), obj);
+                                    field.set(row, baseMapper.selectList(wrapper));
+                                } catch (NoSuchFieldException e) {
+                                    e.printStackTrace();
+                                }
                             } catch (IllegalAccessException e) {
                                 e.printStackTrace();
                             }
