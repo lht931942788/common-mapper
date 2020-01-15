@@ -48,15 +48,11 @@ public class JoinTableInterceptor implements Interceptor, ApplicationContextAwar
                             try {
                                 //TODO 加查询条件
                                 Wrapper wrapper = Wrapper.build();
-                                try {
-                                    Field f = row.getClass().getField("");
-                                    Object obj = f.get(row);
-                                    wrapper.eq(f.getName(), obj);
-                                    field.set(row, baseMapper.selectList(wrapper));
-                                } catch (NoSuchFieldException e) {
-                                    e.printStackTrace();
-                                }
-                            } catch (IllegalAccessException e) {
+                                Field f = row.getClass().getField("");
+                                Object obj = f.get(row);
+                                wrapper.eq(f.getName(), obj);
+                                field.set(row, baseMapper.selectList(wrapper));
+                            } catch (IllegalAccessException | NoSuchFieldException e) {
                                 e.printStackTrace();
                             }
                         });
