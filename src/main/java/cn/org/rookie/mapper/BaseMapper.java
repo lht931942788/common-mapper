@@ -18,7 +18,7 @@ public interface BaseMapper<T, E> {
     int delete(@Param("wrapper") Wrapper wrapper);
 
     @UpdateProvider(type = BaseMapperProvider.class, method = "updateByPrimary")
-    int updateByPrimary(@Param("entity") T entity);
+    int updateByPrimary(T entity);
 
     @DeleteProvider(type = BaseMapperProvider.class, method = "update")
     int update(@Param("entity") T entity, @Param("wrapper") Wrapper wrapper);
