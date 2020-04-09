@@ -21,6 +21,7 @@ public class SQLBuilder {
     }
 
     public SQLBuilder insert() {
+        //TODO 加if标签判断
         List<ColumnInfo> columns = tableInfo.getColumns();
         sql = new SQL();
         sql.INSERT_INTO(tableInfo.getTableName());
@@ -36,6 +37,7 @@ public class SQLBuilder {
     }
 
     public SQLBuilder update() {
+        //TODO 加if标签判断
         List<ColumnInfo> columns = tableInfo.getColumns();
         sql = new SQL();
         sql.UPDATE(tableInfo.getTableName());
