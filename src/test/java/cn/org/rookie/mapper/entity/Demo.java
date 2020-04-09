@@ -15,6 +15,7 @@ public class Demo {
     private String id;
 
     private String username;
+    private String password;
 
     @Transient
     @JoinTable(mappedClass = TestMapper.class)
@@ -42,5 +43,13 @@ public class Demo {
 
     public void setTests(List<Test> tests) {
         this.tests = tests;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

@@ -26,7 +26,7 @@ public class SQLBuilder {
         sql = new SQL();
         sql.INSERT_INTO(tableInfo.getTableName());
         for (ColumnInfo columnInfo : columns) {
-            sql.VALUES(columnInfo.getColumnName(), "#{" + columnInfo.getFieldName() + "}");
+            sql.VALUES(String.format(ifScript(columnInfo.getFieldName()), columnInfo.getColumnName()), String.format(ifScript(columnInfo.getFieldName()), "#{" + columnInfo.getFieldName() + "}"));
         }
         return this;
     }
@@ -37,12 +37,11 @@ public class SQLBuilder {
     }
 
     public SQLBuilder update() {
-        //TODO 加if标签判断
         List<ColumnInfo> columns = tableInfo.getColumns();
         sql = new SQL();
         sql.UPDATE(tableInfo.getTableName());
         for (ColumnInfo columnInfo : columns) {
-            sql.SET(columnInfo.getColumnName() + " = #{" + columnInfo.getFieldName() + "}");
+            sql.SET(String.format(ifScript(columnInfo.getFieldName()), columnInfo.getColumnName() + " = #{" + columnInfo.getFieldName() + "}"));
         }
         return this;
     }
@@ -96,5 +95,9 @@ public class SQLBuilder {
 
     public String build() {
         return sql.toString();
+    }
+
+    public String ifScript(String name) {
+        return "<if test=\"" + name + " != null and " + name + " != ''\">%s</if>";
     }
 }
