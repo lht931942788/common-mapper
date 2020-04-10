@@ -75,10 +75,14 @@
 
     <profiles>
         <profile>
-            <id>default</id>
+            <id>release</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
+            <properties>
+                <gpg.executable>gpg</gpg.executable>
+                <gpg.passphrase>Lht19941104</gpg.passphrase>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
@@ -141,6 +145,7 @@
                             <serverId>ossrh</serverId>
                             <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                             <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                            <stagingRepositoryId>central,foo2</stagingRepositoryId>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -156,16 +161,7 @@
                     <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
                 </repository>
             </distributionManagement>
-        </profile>
-        <profile>
-            <id>ossrh</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <gpg.executable>gpg</gpg.executable>
-                <gpg.passphrase>Lht19941104</gpg.passphrase>
-            </properties>
+
         </profile>
     </profiles>
 
@@ -204,4 +200,5 @@
             </releases>
         </pluginRepository>
     </pluginRepositories>
+
 </project>
