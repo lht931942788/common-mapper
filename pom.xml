@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>cn.org.rookie</groupId>
     <artifactId>common-mapper</artifactId>
-    <version>1.25</version>
+    <version>1.25-SNAPSHOT</version>
     <name>common-mapper</name>
 
     <parent>
