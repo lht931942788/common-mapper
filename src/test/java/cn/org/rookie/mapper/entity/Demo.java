@@ -17,7 +17,6 @@ public class Demo {
     private String username;
     private String password;
 
-    @Transient
     @JoinTable(mappedClass = TestMapper.class)
     private List<Test> tests;
 
