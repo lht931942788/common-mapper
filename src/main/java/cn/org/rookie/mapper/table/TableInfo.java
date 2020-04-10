@@ -75,13 +75,14 @@ public class TableInfo {
             if (isTransient == null) {
                 if (field.getAnnotation(Primary.class) != null) {
                     primaryInfo = new PrimaryInfo(field);
-                }
-                if (field.getAnnotation(JoinColumn.class) != null) {
-                    JoinColumnInfo joinColumnInfo = new JoinColumnInfo(field);
-                    joinColumns.add(joinColumnInfo);
                 } else {
-                    ColumnInfo columnInfo = new ColumnInfo(field);
-                    columns.add(columnInfo);
+                    if (field.getAnnotation(JoinColumn.class) != null) {
+                        JoinColumnInfo joinColumnInfo = new JoinColumnInfo(field);
+                        joinColumns.add(joinColumnInfo);
+                    } else {
+                        ColumnInfo columnInfo = new ColumnInfo(field);
+                        columns.add(columnInfo);
+                    }
                 }
             }
         }

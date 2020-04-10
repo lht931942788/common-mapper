@@ -21,13 +21,23 @@ public class SQLBuilder {
     }
 
     public SQLBuilder insert() {
-        //TODO 加if标签判断
         List<ColumnInfo> columns = tableInfo.getColumns();
         sql = new SQL();
         sql.INSERT_INTO(tableInfo.getTableName());
-        for (ColumnInfo columnInfo : columns) {
-            sql.VALUES(String.format(ifScript(columnInfo.getFieldName()), columnInfo.getColumnName()), String.format(ifScript(columnInfo.getFieldName()), "#{" + columnInfo.getFieldName() + "}"));
+        StringBuilder value = new StringBuilder();
+        StringBuilder values = new StringBuilder();
+        for (int i = 0; i < columns.size(); i++) {
+            ColumnInfo columnInfo = columns.get(i);
+            if (i + 1 == columns.size()) {
+                value.append(String.format(ifScript(columnInfo.getFieldName(), false), columnInfo.getColumnName()));
+                values.append(String.format(ifScript(columnInfo.getFieldName(), false), "#{" + columnInfo.getFieldName() + "}"));
+            } else {
+                value.append(String.format(ifScript(columnInfo.getFieldName(), true), columnInfo.getColumnName()));
+                values.append(String.format(ifScript(columnInfo.getFieldName(), true), "#{" + columnInfo.getFieldName() + "}"));
+            }
         }
+        sql.VALUES(tableInfo.getPrimaryInfo().getColumnName(), "#{" + tableInfo.getPrimaryInfo().getFieldName() + "}");
+        sql.VALUES(value.toString(), values.toString());
         return this;
     }
 
@@ -40,15 +50,23 @@ public class SQLBuilder {
         List<ColumnInfo> columns = tableInfo.getColumns();
         sql = new SQL();
         sql.UPDATE(tableInfo.getTableName());
-        for (ColumnInfo columnInfo : columns) {
-            sql.SET(String.format(ifScript(columnInfo.getFieldName()), columnInfo.getColumnName() + " = #{" + columnInfo.getFieldName() + "}"));
+        StringBuilder set = new StringBuilder();
+        for (int i = 0; i < columns.size(); i++) {
+            ColumnInfo columnInfo = columns.get(i);
+            if (i + 1 == columns.size()) {
+                set.append(String.format(ifScript(columnInfo.getFieldName(), false), columnInfo.getColumnName() + " = #{" + columnInfo.getFieldName() + "}"));
+            } else {
+                set.append(String.format(ifScript(columnInfo.getFieldName(), true), columnInfo.getColumnName() + " = #{" + columnInfo.getFieldName() + "}"));
+            }
         }
+        sql.SET(set.toString());
         return this;
     }
 
     public SQLBuilder select() {
         sql = new SQL();
         String tableName = tableInfo.getTableName();
+        sql.SELECT(tableName + "." + tableInfo.getPrimaryInfo().getColumnName() + " \"" + tableInfo.getPrimaryInfo().getFieldName() + "\"");
         for (ColumnInfo columnInfo : tableInfo.getColumns()) {
             sql.SELECT(tableName + "." + columnInfo.getColumnName() + " \"" + columnInfo.getFieldName() + "\"");
         }
@@ -94,10 +112,14 @@ public class SQLBuilder {
     }
 
     public String build() {
-        return sql.toString();
+        return "<script>" + sql.toString() + "</script>";
     }
 
-    public String ifScript(String name) {
-        return "<if test=\"" + name + " != null and " + name + " != ''\">%s</if>";
+    private String ifScript(String fieldName, boolean b) {
+        if (b) {
+            return "<if test=\"" + fieldName + " != null" + " and " + fieldName + " != ''\">%s,</if>";
+        } else {
+            return "<if test=\"" + fieldName + " != null" + " and " + fieldName + " != ''\">%s</if>";
+        }
     }
 }
