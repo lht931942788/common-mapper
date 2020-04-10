@@ -52,6 +52,6 @@ public class BaseMapperProvider {
             sqlBuilder = new SQLBuilder(getEntityType(context));
             CONTEXT.put(name, sqlBuilder);
         }
-        return sqlBuilder;
+        return sqlBuilder.reset();
     }
 }

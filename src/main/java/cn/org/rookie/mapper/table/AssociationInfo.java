@@ -16,15 +16,8 @@ public class AssociationInfo {
         return target;
     }
 
-    public void setTarget(String target) {
-        this.target = target;
-    }
-
     public String getAssociation() {
         return association;
     }
 
-    public void setAssociation(String association) {
-        this.association = association;
-    }
 }

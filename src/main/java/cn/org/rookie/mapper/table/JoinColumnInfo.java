@@ -34,31 +34,15 @@ public class JoinColumnInfo {
         return tableName;
     }
 
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
-    }
-
     public String getFieldName() {
         return fieldName;
-    }
-
-    public void setFieldName(String fieldName) {
-        this.fieldName = fieldName;
     }
 
     public String getColumnName() {
         return columnName;
     }
 
-    public void setColumnName(String columnName) {
-        this.columnName = columnName;
-    }
-
     public List<AssociationInfo> getAssociations() {
         return associations;
-    }
-
-    public void setAssociations(List<AssociationInfo> associations) {
-        this.associations = associations;
     }
 }

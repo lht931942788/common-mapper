@@ -17,9 +17,13 @@ public class SQLBuilder {
         this.type = type;
     }
 
+    public SQLBuilder reset() {
+        sql = new SQL();
+        return this;
+    }
+
     public SQLBuilder insert() {
         List<ColumnInfo> columns = tableInfo.getColumns();
-        sql = new SQL();
         sql.INSERT_INTO(getTableName());
         StringBuilder value = new StringBuilder();
         StringBuilder values = new StringBuilder();
@@ -40,13 +44,12 @@ public class SQLBuilder {
     }
 
     public SQLBuilder delete() {
-        sql = new SQL().DELETE_FROM(getTableName());
+        sql.DELETE_FROM(getTableName());
         return this;
     }
 
     public SQLBuilder update() {
         List<ColumnInfo> columns = tableInfo.getColumns();
-        sql = new SQL();
         sql.UPDATE(getTableName());
         StringBuilder set = new StringBuilder();
         for (int i = 0; i < columns.size(); i++) {
@@ -64,7 +67,6 @@ public class SQLBuilder {
     }
 
     public SQLBuilder select() {
-        sql = new SQL();
         String tableName = getTableName();
         sql.SELECT(select(tableName, getPrimaryColumnName(), getPrimaryFieldName()));
         for (ColumnInfo columnInfo : tableInfo.getColumns()) {
@@ -128,12 +130,12 @@ public class SQLBuilder {
         return getPrimaryInfo().getFieldName();
     }
 
-    private String sharp(String fieldName) {
-        return String.format("#{%s}", fieldName);
-    }
-
     private String select(String tableName, String columnName, String fieldName) {
         return String.format("%s.%s \"%s\"", tableName, columnName, fieldName);
+    }
+
+    private String sharp(String fieldName) {
+        return String.format("#{%s}", fieldName);
     }
 
     private String set(String columnName, String fieldName) {
