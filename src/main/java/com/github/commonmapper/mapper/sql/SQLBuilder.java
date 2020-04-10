@@ -1,7 +1,6 @@
 package com.github.commonmapper.mapper.sql;
 
 import com.github.commonmapper.mapper.sql.where.Condition;
-import cn.org.rookie.mapper.table.*;
 import com.github.commonmapper.mapper.table.*;
 import org.apache.ibatis.jdbc.SQL;
 

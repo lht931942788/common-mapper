@@ -2,7 +2,6 @@ package com.github.commonmapper.mapper.sql;
 
 import com.github.commonmapper.mapper.sql.where.Condition;
 import com.github.commonmapper.mapper.sql.where.SingleCondition;
-import cn.org.rookie.mapper.sql.where.condition.*;
 import com.github.commonmapper.mapper.sql.where.condition.*;
 
 import java.util.ArrayList;

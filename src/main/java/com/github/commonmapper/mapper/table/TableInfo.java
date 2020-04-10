@@ -1,6 +1,5 @@
 package com.github.commonmapper.mapper.table;
 
-import cn.org.rookie.mapper.annotation.*;
 import com.github.commonmapper.utils.StringUtils;
 import com.github.commonmapper.mapper.annotation.*;
 import org.mybatis.logging.Logger;
