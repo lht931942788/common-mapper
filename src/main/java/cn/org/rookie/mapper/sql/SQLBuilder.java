@@ -27,13 +27,12 @@ public class SQLBuilder {
             ColumnInfo columnInfo = columns.get(i);
             String columnName = columnInfo.getColumnName();
             String fieldName = columnInfo.getFieldName();
+            String separator = ",";
             if (i + 1 == columns.size()) {
-                value.append(ifScript(fieldName, columnName, ""));
-                values.append(ifScript(fieldName, sharp(fieldName), ""));
-            } else {
-                value.append(ifScript(fieldName, columnName, ","));
-                values.append(ifScript(fieldName, sharp(fieldName), ","));
+                separator = "";
             }
+            value.append(ifScript(fieldName, columnName, separator));
+            values.append(ifScript(fieldName, sharp(fieldName), separator));
         }
         sql.VALUES(getPrimaryColumnName(), sharp(getPrimaryFieldName()));
         sql.VALUES(value.toString(), values.toString());
@@ -54,11 +53,11 @@ public class SQLBuilder {
             ColumnInfo columnInfo = columns.get(i);
             String fieldName = columnInfo.getFieldName();
             String columnName = columnInfo.getColumnName();
+            String separator = ",";
             if (i + 1 == columns.size()) {
-                set.append(ifScript(fieldName, set(columnName, fieldName), ""));
-            } else {
-                set.append(ifScript(fieldName, set(columnName, fieldName), ","));
+                separator = "";
             }
+            set.append(ifScript(fieldName, set(columnName, fieldName), separator));
         }
         sql.SET(set.toString());
         return this;
@@ -78,14 +77,14 @@ public class SQLBuilder {
             sql.SELECT(select(joinTableName, joinColumnInfo.getColumnName(), joinColumnInfo.getFieldName()));
             List<AssociationInfo> associations = joinColumnInfo.getAssociations();
             for (AssociationInfo associationInfo : associations) {
-                sql.WHERE(tableName + "." + associationInfo.getTarget() + " = " + joinTableName + "." + associationInfo.getAssociation());
+                sql.WHERE(condition(tableName, associationInfo.getTarget(), joinTableName, associationInfo.getAssociation()));
             }
         }
         return this;
     }
 
     public SQLBuilder byPrimary() {
-        sql.WHERE(getTableName() + "." + getPrimaryColumnName() + " = #{id}");
+        sql.WHERE(condition(getTableName(), getPrimaryColumnName(), "id"));
         return this;
     }
 
@@ -113,14 +112,6 @@ public class SQLBuilder {
         return type;
     }
 
-    public String build() {
-        return "<script>" + sql.toString() + "</script>";
-    }
-
-    private String ifScript(String fieldName, String content, String split) {
-        return "<if test=\"" + fieldName + " != null and " + fieldName + " != ''\">" + content + split + "</if>";
-    }
-
     private String getTableName() {
         return tableInfo.getTableName();
     }
@@ -137,8 +128,8 @@ public class SQLBuilder {
         return getPrimaryInfo().getFieldName();
     }
 
-    private String sharp(String content) {
-        return String.format("#{%s}", content);
+    private String sharp(String fieldName) {
+        return String.format("#{%s}", fieldName);
     }
 
     private String select(String tableName, String columnName, String fieldName) {
@@ -148,5 +139,22 @@ public class SQLBuilder {
     private String set(String columnName, String fieldName) {
         return String.format("%s = #{%s}", columnName, fieldName);
     }
+
+    private String ifScript(String fieldName, String content, String separator) {
+        return String.format("<if test=\"%s != null and %s != ''\">%s%s</if>", fieldName, fieldName, content, separator);
+    }
+
+    private String condition(String tableName, String columnName, String fieldName) {
+        return String.format("%s.%s = #{%s}", tableName, columnName, fieldName);
+    }
+
+    private String condition(String tableName, String left, String joinTableName, String right) {
+        return String.format("%s.%s = %s.%s", tableName, left, joinTableName, right);
+    }
+
+    public String build() {
+        return "<script>" + sql.toString() + "</script>";
+    }
+
 
 }
