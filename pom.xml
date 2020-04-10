@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>cn.org.rookie</groupId>
     <artifactId>common-mapper</artifactId>
-    <version>1.26-SNAPSHOT</version>
+    <version>1.26</version>
     <name>common-mapper</name>
 
     <parent>
@@ -59,7 +59,7 @@
 
     <scm>
         <url>https://github.com/lht931942788/common-mapper</url>
-        <tag>common-mapper-1.25</tag>
+        <tag>common-mapper-1.26</tag>
         <connection>scm:git:https://github.com/lht931942788/common-mapper</connection>
         <developerConnection>scm:git:https://github.com/lht931942788/common-mapper.git</developerConnection>
     </scm>
