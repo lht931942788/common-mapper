@@ -29,3 +29,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Maven ###
+pom.xml.releaseBackup
+release.properties
