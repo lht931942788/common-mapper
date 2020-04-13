@@ -14,10 +14,10 @@ public class TableInfo {
 
     private final Logger log = LoggerFactory.getLogger(TableInfo.class);
 
-    private String tableName;
+    private final String tableName;
     private PrimaryInfo primaryInfo;
-    private List<ColumnInfo> columns = new ArrayList<>();
-    private List<JoinColumnInfo> joinColumns = new ArrayList<>();
+    private final List<ColumnInfo> columns = new ArrayList<>();
+    private final List<JoinColumnInfo> joinColumns = new ArrayList<>();
 
     public TableInfo(Class type) {
         Annotation table = type.getAnnotation(Table.class);
