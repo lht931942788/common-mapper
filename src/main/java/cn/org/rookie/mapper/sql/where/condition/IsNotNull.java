@@ -10,7 +10,7 @@ public class IsNotNull extends Condition {
 
     @Override
     public String render() {
-        return columnName + " is not null";
+        return columnName + " IS NOT NULL";
     }
 
 }

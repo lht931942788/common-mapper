@@ -10,7 +10,7 @@ public class Like extends SingleCondition {
 
     @Override
     public String getTerm() {
-        return "like";
+        return "LIKE";
     }
 
 }
