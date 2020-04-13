@@ -32,7 +32,7 @@ public class SQLBuilder {
             String columnName = columnInfo.getColumnName();
             String fieldName = columnInfo.getFieldName();
             String separator = ",";
-            if (i + 1 == columns.size()) {
+            if (i == 0) {
                 separator = "";
             }
             value.append(ifScript(fieldName, columnName, separator));
@@ -57,7 +57,7 @@ public class SQLBuilder {
             String fieldName = columnInfo.getFieldName();
             String columnName = columnInfo.getColumnName();
             String separator = ",";
-            if (i + 1 == columns.size()) {
+            if (i == 0) {
                 separator = "";
             }
             set.append(ifScript(fieldName, set(columnName, fieldName), separator));
@@ -102,6 +102,9 @@ public class SQLBuilder {
                 }
                 sql.WHERE(condition.render());
             }
+            if (wrapper.getOrder().size() > 0) {
+                sql.ORDER_BY(wrapper.getOrder().toArray(new String[0]));
+            }
         }
         return this;
     }
@@ -143,7 +146,7 @@ public class SQLBuilder {
     }
 
     private String ifScript(String fieldName, String content, String separator) {
-        return String.format("<if test=\"%s != null and %s != ''\">%s%s</if>", fieldName, fieldName, content, separator);
+        return String.format("<if test=\"%s != null and %s != ''\">%s%s</if>", fieldName, fieldName, separator, content);
     }
 
     private String condition(String tableName, String columnName, String fieldName) {
