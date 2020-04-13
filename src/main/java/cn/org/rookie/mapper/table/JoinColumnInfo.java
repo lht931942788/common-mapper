@@ -2,7 +2,7 @@ package cn.org.rookie.mapper.table;
 
 import cn.org.rookie.mapper.annotation.Association;
 import cn.org.rookie.mapper.annotation.JoinColumn;
-import cn.org.rookie.utils.StringUtils;
+import cn.org.rookie.mapper.utils.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -10,10 +10,10 @@ import java.util.List;
 
 public class JoinColumnInfo {
 
-    private final String tableName;
-    private final String fieldName;
-    private final String columnName;
-    private final List<AssociationInfo> associations = new ArrayList<>();
+    private String tableName;
+    private String fieldName;
+    private String columnName;
+    private List<AssociationInfo> associations = new ArrayList<>();
 
     public JoinColumnInfo(Field field) {
         JoinColumn joinColumn = field.getAnnotation(JoinColumn.class);

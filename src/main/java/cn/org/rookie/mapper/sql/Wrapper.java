@@ -83,7 +83,7 @@ public class Wrapper {
         return addCondition(new Like(columnName), false);
     }
 
-    public Wrapper in(String columnName, Object param) {
+    public Wrapper in(String columnName, Object[] param) {
         params.put(columnName, param);
         return addCondition(new In(columnName));
     }

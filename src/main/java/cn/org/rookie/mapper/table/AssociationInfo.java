@@ -4,8 +4,8 @@ import cn.org.rookie.mapper.annotation.Association;
 
 public class AssociationInfo {
 
-    private final String target;
-    private final String association;
+    private String target;
+    private String association;
 
     public AssociationInfo(Association association) {
         this.target = association.target();

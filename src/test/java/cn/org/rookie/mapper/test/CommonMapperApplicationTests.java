@@ -4,7 +4,7 @@ import cn.org.rookie.mapper.entity.Demo;
 import cn.org.rookie.mapper.mapper.DemoMapper;
 import cn.org.rookie.mapper.service.DemoService;
 import cn.org.rookie.mapper.sql.Wrapper;
-import cn.org.rookie.utils.JoinTableFlag;
+import cn.org.rookie.mapper.utils.JoinTableFlag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

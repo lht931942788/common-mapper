@@ -1,9 +1,9 @@
-package cn.org.rookie.interceptor;
+package cn.org.rookie.mapper.interceptor;
 
 import cn.org.rookie.mapper.BaseMapper;
 import cn.org.rookie.mapper.annotation.JoinTable;
 import cn.org.rookie.mapper.sql.Wrapper;
-import cn.org.rookie.utils.JoinTableFlag;
+import cn.org.rookie.mapper.utils.JoinTableFlag;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.plugin.*;

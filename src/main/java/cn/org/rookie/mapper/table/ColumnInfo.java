@@ -1,14 +1,14 @@
 package cn.org.rookie.mapper.table;
 
 import cn.org.rookie.mapper.annotation.Column;
-import cn.org.rookie.utils.StringUtils;
+import cn.org.rookie.mapper.utils.StringUtils;
 
 import java.lang.reflect.Field;
 
 public class ColumnInfo {
 
-    private final String fieldName;
-    private final String columnName;
+    private String fieldName;
+    private String columnName;
     private Boolean isOrder = false;
     private String orderType = "aes";
 

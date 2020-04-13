@@ -9,6 +9,6 @@ public class In extends Condition {
 
     @Override
     public String render() {
-        return columnName + " in (${wrapper.params." + columnName + "})";
+        return columnName + " in <foreach collection=\"${wrapper.params." + columnName + "}\" open=\"(\" close=\")\" separator=\",\" item=\"item\">#{item}</foreach >";
     }
 }

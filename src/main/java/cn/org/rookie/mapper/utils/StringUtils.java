@@ -1,4 +1,4 @@
-package cn.org.rookie.utils;
+package cn.org.rookie.mapper.utils;
 
 import java.util.Arrays;
 import java.util.Collection;

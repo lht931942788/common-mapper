@@ -11,10 +11,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @SuppressWarnings("unused")
 public class BaseMapperProvider {
 
-    /**
-     * 用来缓存已经生成的SQL
-     */
-
     private static final Map<String, SQLBuilder> CONTEXT = new ConcurrentHashMap<>();
 
     public String insert(ProviderContext context) {

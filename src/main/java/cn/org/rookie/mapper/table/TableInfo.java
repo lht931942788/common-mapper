@@ -1,7 +1,7 @@
 package cn.org.rookie.mapper.table;
 
 import cn.org.rookie.mapper.annotation.*;
-import cn.org.rookie.utils.StringUtils;
+import cn.org.rookie.mapper.utils.StringUtils;
 import org.mybatis.logging.Logger;
 import org.mybatis.logging.LoggerFactory;
 
@@ -14,10 +14,10 @@ public class TableInfo {
 
     private final Logger log = LoggerFactory.getLogger(TableInfo.class);
 
-    private final String tableName;
+    private String tableName;
     private PrimaryInfo primaryInfo;
-    private final List<ColumnInfo> columns = new ArrayList<>();
-    private final List<JoinColumnInfo> joinColumns = new ArrayList<>();
+    private List<ColumnInfo> columns = new ArrayList<>();
+    private List<JoinColumnInfo> joinColumns = new ArrayList<>();
 
     public TableInfo(Class type) {
         Annotation table = type.getAnnotation(Table.class);

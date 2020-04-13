@@ -154,12 +154,6 @@ public class SQLBuilder {
         return String.format("%s.%s = %s.%s", tableName, left, joinTableName, right);
     }
 
-    /**
-     * <script> MyBatis Java动态SQL不能直接用OGNL，需要加入<script>标签
-     *
-     * @return SQL
-     */
-
     public String build() {
         return "<script>" + sql.toString() + "</script>";
     }
