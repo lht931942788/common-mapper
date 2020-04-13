@@ -2,20 +2,10 @@ package cn.org.rookie.mapper.sql.where;
 
 public abstract class SingleCondition extends Condition {
 
-    protected String prefix = "#";
-
     public SingleCondition(String columnName) {
         super(columnName);
     }
 
-
-    public String getPrefix() {
-        return prefix;
-    }
-
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
-    }
 
     public String render() {
         return columnName + " " + getTerm() + " " + getPrefix() + "{wrapper.params." + columnName + "}";

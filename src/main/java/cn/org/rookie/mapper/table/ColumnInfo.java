@@ -7,8 +7,8 @@ import java.lang.reflect.Field;
 
 public class ColumnInfo {
 
-    private String fieldName;
-    private String columnName;
+    private final String fieldName;
+    private final String columnName;
     private Boolean isOrder = false;
     private String orderType = "aes";
 

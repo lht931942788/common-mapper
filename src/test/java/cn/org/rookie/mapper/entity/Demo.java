@@ -10,13 +10,12 @@ import java.util.List;
 @Table("admin_user")
 public class Demo {
 
+    @Primary
     private String id;
 
     private String username;
     private String password;
 
-    @JoinTable(mappedClass = TestMapper.class)
-    private List<Test> tests;
 
     public String getId() {
         return id;
@@ -32,14 +31,6 @@ public class Demo {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public List<Test> getTests() {
-        return tests;
-    }
-
-    public void setTests(List<Test> tests) {
-        this.tests = tests;
     }
 
     public String getPassword() {

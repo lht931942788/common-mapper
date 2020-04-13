@@ -1,7 +1,6 @@
 package cn.org.rookie.mapper.sql;
 
 import cn.org.rookie.mapper.sql.where.Condition;
-import cn.org.rookie.mapper.sql.where.SingleCondition;
 import cn.org.rookie.mapper.sql.where.condition.*;
 
 import java.util.ArrayList;
@@ -11,8 +10,8 @@ import java.util.Map;
 
 public class Wrapper {
 
-    private Map<String, Object> params = new HashMap<>();
-    private List<Condition> conditions = new ArrayList<>();
+    private final Map<String, Object> params = new HashMap<>();
+    private final List<Condition> conditions = new ArrayList<>();
     private List<String> orders = new ArrayList<>();
     private boolean isAnd = true;
 
@@ -39,7 +38,7 @@ public class Wrapper {
         this.orders = orders;
     }
 
-    private Wrapper addCondition(SingleCondition condition, boolean isSharp) {
+    private Wrapper addCondition(Condition condition, boolean isSharp) {
         if (!isSharp) {
             condition.setPrefix("$");
         }
@@ -85,7 +84,7 @@ public class Wrapper {
 
     public Wrapper in(String columnName, Object[] param) {
         params.put(columnName, param);
-        return addCondition(new In(columnName));
+        return addCondition(new In(columnName), true);
     }
 
     public Wrapper isNull(String columnName) {

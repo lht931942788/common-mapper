@@ -2,27 +2,23 @@ package cn.org.rookie.mapper.test;
 
 import cn.org.rookie.mapper.entity.Demo;
 import cn.org.rookie.mapper.mapper.DemoMapper;
-import cn.org.rookie.mapper.service.DemoService;
 import cn.org.rookie.mapper.sql.Wrapper;
 import cn.org.rookie.mapper.utils.JoinTableFlag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 @SpringBootTest
 public class CommonMapperApplicationTests {
 
     @Autowired
     DemoMapper demoMapper;
-    @Autowired
-    DemoService demoService;
 
     @Test
     public void contextLoads() throws InterruptedException {
-        JoinTableFlag.off();
-        Demo demo = demoMapper.selectOne(Wrapper.build().eq("username", "ceshi"));
-        System.out.println(demo.getTests());
-        demoMapper.updateByPrimary(demo);
+        demoMapper.selectOne(Wrapper.build().in("username",new Object[]{"ceshi"}));
     }
 
     @Test

@@ -10,10 +10,10 @@ import java.util.List;
 
 public class JoinColumnInfo {
 
-    private String tableName;
-    private String fieldName;
-    private String columnName;
-    private List<AssociationInfo> associations = new ArrayList<>();
+    private final String tableName;
+    private final String fieldName;
+    private final String columnName;
+    private final List<AssociationInfo> associations = new ArrayList<>();
 
     public JoinColumnInfo(Field field) {
         JoinColumn joinColumn = field.getAnnotation(JoinColumn.class);
