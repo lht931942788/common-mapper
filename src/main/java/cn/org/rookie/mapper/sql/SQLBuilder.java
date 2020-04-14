@@ -1,6 +1,7 @@
 package cn.org.rookie.mapper.sql;
 
 import cn.org.rookie.mapper.sql.where.Condition;
+import cn.org.rookie.mapper.sql.where.Wrapper;
 import cn.org.rookie.mapper.table.*;
 import org.apache.ibatis.jdbc.SQL;
 
@@ -10,23 +11,32 @@ public class SQLBuilder {
 
     private final TableInfo tableInfo;
     private final Class<?> type;
+    private final SQL INSERT = new SQL();
+    private final SQL DELETE = new SQL();
+    private final SQL UPDATE = new SQL();
+    private final SQL SELECT = new SQL();
     private SQL sql;
 
     public SQLBuilder(Class<?> type) {
         this.tableInfo = new TableInfo(type);
         this.type = type;
-    }
 
-    public SQLBuilder reset() {
-        sql = new SQL();
-        return this;
-    }
-
-    public SQLBuilder insert() {
-        List<ColumnInfo> columns = tableInfo.getColumns();
-        sql.INSERT_INTO(getTableName());
         StringBuilder value = new StringBuilder();
         StringBuilder values = new StringBuilder();
+
+        StringBuilder set = new StringBuilder();
+
+        List<ColumnInfo> columns = this.tableInfo.getColumns();
+        String tableName = getTableName();
+        String primaryFieldName = getPrimaryFieldName();
+        String primaryColumnName = getPrimaryColumnName();
+
+        INSERT.INSERT_INTO(tableName);
+        DELETE.DELETE_FROM(tableName);
+        UPDATE.UPDATE(tableName);
+        SELECT.FROM(tableName);
+        SELECT.SELECT(select(tableName, primaryColumnName, primaryFieldName));
+
         for (int i = 0; i < columns.size(); i++) {
             ColumnInfo columnInfo = columns.get(i);
             String columnName = columnInfo.getColumnName();
@@ -35,53 +45,47 @@ public class SQLBuilder {
             if (i == 0) {
                 separator = "";
             }
+
             value.append(ifScript(fieldName, columnName, separator));
             values.append(ifScript(fieldName, sharp(fieldName), separator));
+
+            set.append(ifScript(fieldName, set(columnName, fieldName), separator));
+
+            SELECT.SELECT(select(tableName, columnName, fieldName));
         }
-        sql.VALUES(getPrimaryColumnName(), sharp(getPrimaryFieldName()));
-        sql.VALUES(value.toString(), values.toString());
+        INSERT.VALUES(primaryColumnName, sharp(primaryFieldName));
+        INSERT.VALUES(value.toString(), values.toString());
+
+        UPDATE.SET(set.toString());
+
+        for (JoinColumnInfo joinColumnInfo : tableInfo.getJoinColumns()) {
+            String joinTableName = joinColumnInfo.getTableName();
+            SELECT.FROM(joinTableName);
+            SELECT.SELECT(select(joinTableName, joinColumnInfo.getColumnName(), joinColumnInfo.getFieldName()));
+            List<AssociationInfo> associations = joinColumnInfo.getAssociations();
+            for (AssociationInfo associationInfo : associations) {
+                SELECT.WHERE(condition(tableName, associationInfo.getTarget(), joinTableName, associationInfo.getAssociation()));
+            }
+        }
+    }
+
+    public SQLBuilder insert() {
+        sql = INSERT;
         return this;
     }
 
     public SQLBuilder delete() {
-        sql.DELETE_FROM(getTableName());
+        sql = DELETE;
         return this;
     }
 
     public SQLBuilder update() {
-        List<ColumnInfo> columns = tableInfo.getColumns();
-        sql.UPDATE(getTableName());
-        StringBuilder set = new StringBuilder();
-        for (int i = 0; i < columns.size(); i++) {
-            ColumnInfo columnInfo = columns.get(i);
-            String fieldName = columnInfo.getFieldName();
-            String columnName = columnInfo.getColumnName();
-            String separator = ",";
-            if (i == 0) {
-                separator = "";
-            }
-            set.append(ifScript(fieldName, set(columnName, fieldName), separator));
-        }
-        sql.SET(set.toString());
+        sql = UPDATE;
         return this;
     }
 
     public SQLBuilder select() {
-        String tableName = getTableName();
-        sql.SELECT(select(tableName, getPrimaryColumnName(), getPrimaryFieldName()));
-        for (ColumnInfo columnInfo : tableInfo.getColumns()) {
-            sql.SELECT(select(tableName, columnInfo.getColumnName(), columnInfo.getFieldName()));
-        }
-        sql.FROM(tableName);
-        for (JoinColumnInfo joinColumnInfo : tableInfo.getJoinColumns()) {
-            String joinTableName = joinColumnInfo.getTableName();
-            sql.FROM(joinTableName);
-            sql.SELECT(select(joinTableName, joinColumnInfo.getColumnName(), joinColumnInfo.getFieldName()));
-            List<AssociationInfo> associations = joinColumnInfo.getAssociations();
-            for (AssociationInfo associationInfo : associations) {
-                sql.WHERE(condition(tableName, associationInfo.getTarget(), joinTableName, associationInfo.getAssociation()));
-            }
-        }
+        sql = SELECT;
         return this;
     }
 
@@ -107,10 +111,6 @@ public class SQLBuilder {
             }
         }
         return this;
-    }
-
-    public TableInfo getTableInfo() {
-        return tableInfo;
     }
 
     public Class<?> getType() {

@@ -1,7 +1,7 @@
 package cn.org.rookie.mapper;
 
 import cn.org.rookie.mapper.provider.BaseMapperProvider;
-import cn.org.rookie.mapper.sql.Wrapper;
+import cn.org.rookie.mapper.sql.where.Wrapper;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

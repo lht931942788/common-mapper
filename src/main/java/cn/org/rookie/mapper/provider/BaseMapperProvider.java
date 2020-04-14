@@ -1,7 +1,7 @@
 package cn.org.rookie.mapper.provider;
 
 import cn.org.rookie.mapper.sql.SQLBuilder;
-import cn.org.rookie.mapper.sql.Wrapper;
+import cn.org.rookie.mapper.sql.where.Wrapper;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
 import java.lang.reflect.ParameterizedType;
@@ -52,6 +52,6 @@ public class BaseMapperProvider {
             sqlBuilder = new SQLBuilder(getEntityType(context));
             CONTEXT.put(name, sqlBuilder);
         }
-        return sqlBuilder.reset();
+        return sqlBuilder;
     }
 }
