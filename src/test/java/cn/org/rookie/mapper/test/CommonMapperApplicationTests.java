@@ -1,14 +1,10 @@
 package cn.org.rookie.mapper.test;
 
-import cn.org.rookie.mapper.entity.Demo;
 import cn.org.rookie.mapper.mapper.DemoMapper;
-import cn.org.rookie.mapper.sql.Wrapper;
-import cn.org.rookie.mapper.utils.JoinTableFlag;
+import cn.org.rookie.mapper.sql.where.Wrapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
 
 @SpringBootTest
 public class CommonMapperApplicationTests {
@@ -18,7 +14,7 @@ public class CommonMapperApplicationTests {
 
     @Test
     public void contextLoads() throws InterruptedException {
-        demoMapper.selectOne(Wrapper.build().in("username",new Object[]{"ceshi"}));
+        demoMapper.selectOne(Wrapper.build().in("username", new Object[]{"ceshi"}));
     }
 
     @Test
