@@ -2,7 +2,7 @@ package cn.org.rookie.mapper.sql;
 
 import cn.org.rookie.mapper.sql.where.Condition;
 import cn.org.rookie.mapper.sql.where.Wrapper;
-import cn.org.rookie.mapper.table.*;
+import cn.org.rookie.mapper.entity.*;
 import cn.org.rookie.mapper.utils.StringUtils;
 import org.apache.ibatis.jdbc.SQL;
 
@@ -101,7 +101,7 @@ public class SQLBuilder {
     }
 
     public SQLBuilder byPrimary() {
-        sql += (" where " + condition(getTableName(), getPrimaryColumnName(), "id"));
+        sql += (" WHERE " + condition(getTableName(), getPrimaryColumnName(), "id"));
         return this;
     }
 
@@ -113,24 +113,24 @@ public class SQLBuilder {
                 Condition condition = conditions.get(i);
                 if (i != 0) {
                     if (condition.isAnd()) {
-                        where.append(" and ");
+                        where.append(" AND ");
                     } else {
-                        where.append(" or ");
+                        where.append(" OR ");
                     }
                 }
                 where.append(condition.render());
             }
             List<String> order = wrapper.getOrder();
             if (where.length() > 0) {
-                if (sql.contains("where")) {
-                    sql += (" and " + where);
+                if (sql.contains("WHERE")) {
+                    sql += (" AND " + where);
                 } else {
-                    sql += (" where " + where);
+                    sql += (" WHERE " + where);
                 }
             }
 
             if (order.size() > 0) {
-                sql += StringUtils.join(",", " order by ", "", order);
+                sql += StringUtils.join(",", " ORDER BY ", "", order);
             }
         }
         return this;

@@ -1,9 +1,7 @@
-package cn.org.rookie.mapper.table;
+package cn.org.rookie.mapper.entity;
 
 import cn.org.rookie.mapper.annotation.*;
 import cn.org.rookie.mapper.utils.StringUtils;
-import org.mybatis.logging.Logger;
-import org.mybatis.logging.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -11,8 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TableInfo {
-
-    private final Logger log = LoggerFactory.getLogger(TableInfo.class);
 
     private final String tableName;
     private PrimaryInfo primaryInfo;
@@ -28,30 +24,24 @@ public class TableInfo {
         }
         Field[] fields = type.getDeclaredFields();
         for (Field field : fields) {
-            Primary primary = field.getAnnotation(Primary.class);
-            if (primary != null) {
-                primaryInfo = new PrimaryInfo(field);
-                break;
-            }
-        }
-        if (primaryInfo == null) {
-            log.warn(() -> type.getName() + " has no primary key configured");
-        }
-        for (Field field : fields) {
             Transient isTransient = field.getAnnotation(Transient.class);
             JoinTable joinTable = field.getAnnotation(JoinTable.class);
             if (isTransient == null && joinTable == null) {
-                Primary primary = field.getAnnotation(Primary.class);
-                if (primary == null) {
-                    if (field.getAnnotation(JoinColumn.class) != null) {
-                        JoinColumnInfo joinColumnInfo = new JoinColumnInfo(field);
-                        joinColumns.add(joinColumnInfo);
+                if (field.getAnnotation(JoinColumn.class) != null) {
+                    JoinColumnInfo joinColumnInfo = new JoinColumnInfo(field);
+                    joinColumns.add(joinColumnInfo);
+                } else {
+                    ColumnInfo columnInfo = new ColumnInfo(field);
+                    if (columnInfo.isPrimary()) {
+                        primaryInfo = new PrimaryInfo(field);
                     } else {
-                        ColumnInfo columnInfo = new ColumnInfo(field);
                         columns.add(columnInfo);
                     }
                 }
             }
+        }
+        if (primaryInfo == null) {
+            throw new RuntimeException(type.getName() + " has no primary key configured");
         }
     }
 

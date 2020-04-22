@@ -1,43 +1,38 @@
-package cn.org.rookie.mapper.table;
+package cn.org.rookie.mapper.entity;
+
 
 import cn.org.rookie.mapper.annotation.Column;
 import cn.org.rookie.mapper.utils.StringUtils;
 
 import java.lang.reflect.Field;
 
-public class ColumnInfo {
+public class PrimaryInfo {
+    private String columnName;
+    private String fieldName;
 
-    private final String fieldName;
-    private final String columnName;
-    private Boolean isOrder = false;
-    private String orderType = "aes";
-
-    public ColumnInfo(Field field) {
+    public PrimaryInfo(Field field) {
         Column column = field.getAnnotation(Column.class);
         fieldName = field.getName();
         if (column == null || "".equals(column.value())) {
             columnName = StringUtils.camelCaseToUnderscore(field.getName());
         } else {
             columnName = column.value();
-            isOrder = column.order();
-            orderType = column.orderType();
         }
-    }
-
-    public String getFieldName() {
-        return fieldName;
     }
 
     public String getColumnName() {
         return columnName;
     }
 
-    public boolean isOrder() {
-        return isOrder;
+    public void setColumnName(String columnName) {
+        this.columnName = columnName;
     }
 
-    public String getOrderType() {
-        return orderType;
+    public String getFieldName() {
+        return fieldName;
     }
 
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
+    }
 }

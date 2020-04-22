@@ -1,4 +1,4 @@
-package cn.org.rookie.mapper.table;
+package cn.org.rookie.mapper.entity;
 
 import cn.org.rookie.mapper.annotation.Association;
 import cn.org.rookie.mapper.annotation.JoinColumn;

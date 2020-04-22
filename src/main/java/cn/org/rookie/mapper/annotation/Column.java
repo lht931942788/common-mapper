@@ -9,6 +9,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface Column {
 
+    boolean primary() default false;
+
     String value() default "";
 
     boolean order() default false;

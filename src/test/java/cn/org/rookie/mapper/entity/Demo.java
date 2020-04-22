@@ -1,18 +1,16 @@
 package cn.org.rookie.mapper.entity;
 
-import cn.org.rookie.mapper.annotation.JoinTable;
-import cn.org.rookie.mapper.annotation.Primary;
+import cn.org.rookie.mapper.annotation.Association;
+import cn.org.rookie.mapper.annotation.Column;
+import cn.org.rookie.mapper.annotation.JoinColumn;
 import cn.org.rookie.mapper.annotation.Table;
-import cn.org.rookie.mapper.mapper.TestMapper;
-
-import java.util.List;
 
 @Table("admin_user")
 public class Demo {
 
-    @Primary
+    @Column(primary = true)
     private String id;
-
+    @JoinColumn(tableName = "demo", column = "user_id", relations = {@Association(target = "id", association = "user_id")})
     private String username;
     private String password;
 
