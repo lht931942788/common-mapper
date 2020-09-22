@@ -13,7 +13,7 @@ public class JoinTableFlag {
     }
 
     public static boolean getFlag() {
-        return THREAD_LOCAL.get() == null ? true : THREAD_LOCAL.get();
+        return THREAD_LOCAL.get() == null || THREAD_LOCAL.get();
     }
 
 }

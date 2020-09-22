@@ -24,7 +24,6 @@ public class JoinTableInterceptor implements Interceptor, ApplicationContextAwar
 
     private ApplicationContext applicationContext;
 
-    @SuppressWarnings("unchecked")
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
         Object result = invocation.proceed();
@@ -36,14 +35,14 @@ public class JoinTableInterceptor implements Interceptor, ApplicationContextAwar
                 MappedStatement mappedStatement = (MappedStatement) args[0];
                 String id = mappedStatement.getId();
                 String resource = id.substring(0, id.lastIndexOf("."));
-                Class type = (Class) ((ParameterizedType) (Class.forName(resource).getGenericInterfaces()[0])).getActualTypeArguments()[0];
+                Class<?> type = (Class<?>) ((ParameterizedType) (Class.forName(resource).getGenericInterfaces()[0])).getActualTypeArguments()[0];
                 Field[] fields = type.getDeclaredFields();
-                List list = (List) result;
+                List<?> list = (List<?>) result;
                 for (Field field : fields) {
                     JoinTable joinTable = field.getAnnotation(JoinTable.class);
                     if (joinTable != null) {
                         field.setAccessible(true);
-                        BaseMapper baseMapper = (BaseMapper) applicationContext.getBean(joinTable.mappedClass());
+                        BaseMapper<?, ?> baseMapper = (BaseMapper<?, ?>) applicationContext.getBean(joinTable.mappedClass());
                         list.forEach(row -> {
                             try {
                                 //TODO 加查询条件

@@ -41,8 +41,8 @@ public class BaseMapperProvider {
         return getSqlBuilder(context).select().byPrimary().build();
     }
 
-    private Class getEntityType(ProviderContext context) {
-        return (Class) ((ParameterizedType) (context.getMapperType().getGenericInterfaces()[0])).getActualTypeArguments()[0];
+    private Class<?> getEntityType(ProviderContext context) {
+        return (Class<?>) ((ParameterizedType) (context.getMapperType().getGenericInterfaces()[0])).getActualTypeArguments()[0];
     }
 
     private SQLBuilder getSqlBuilder(ProviderContext context) {

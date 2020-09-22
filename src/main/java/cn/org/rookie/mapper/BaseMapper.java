@@ -6,34 +6,34 @@ import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
-public interface BaseMapper<T, E> {
+public interface BaseMapper<E, ID> {
 
     @InsertProvider(type = BaseMapperProvider.class, method = "insert")
-    int insert(T entity);
+    int insert(E entity);
 
     @DeleteProvider(type = BaseMapperProvider.class, method = "deleteByPrimary")
-    int deleteByPrimary(E id);
+    int deleteByPrimary(ID id);
 
     @DeleteProvider(type = BaseMapperProvider.class, method = "delete")
     int delete(@Param("wrapper") Wrapper wrapper);
 
     @UpdateProvider(type = BaseMapperProvider.class, method = "updateByPrimary")
-    int updateByPrimary(T entity);
+    int updateByPrimary(E entity);
 
     @DeleteProvider(type = BaseMapperProvider.class, method = "update")
-    int update(@Param("entity") T entity, @Param("wrapper") Wrapper wrapper);
+    int update(@Param("entity") E entity, @Param("wrapper") Wrapper wrapper);
 
     @SelectProvider(type = BaseMapperProvider.class, method = "selectByPrimary")
-    T selectByPrimary(@Param("id") E id);
+    E select(@Param("id") ID id);
 
     @SelectProvider(type = BaseMapperProvider.class, method = "select")
-    T selectOne(@Param("wrapper") Wrapper wrapper);
+    E selectOne(@Param("wrapper") Wrapper wrapper);
 
     @SelectProvider(type = BaseMapperProvider.class, method = "select")
-    List<T> select();
+    List<E> select();
 
     @SelectProvider(type = BaseMapperProvider.class, method = "select")
-    List<T> selectList(@Param("wrapper") Wrapper wrapper);
+    List<E> selectList(@Param("wrapper") Wrapper wrapper);
 
 }
 
