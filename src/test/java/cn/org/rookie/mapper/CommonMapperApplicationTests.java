@@ -1,12 +1,14 @@
-package cn.org.rookie.mapper.test;
+package cn.org.rookie.mapper;
 
 import cn.org.rookie.mapper.mapper.DemoMapper;
 import cn.org.rookie.mapper.sql.where.Wrapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
+@SpringBootApplication
 public class CommonMapperApplicationTests {
 
     @Autowired
