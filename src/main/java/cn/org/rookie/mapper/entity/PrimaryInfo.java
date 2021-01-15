@@ -14,7 +14,7 @@ public class PrimaryInfo {
         Column column = field.getAnnotation(Column.class);
         fieldName = field.getName();
         if (column == null || "".equals(column.value())) {
-            columnName = StringUtils.camelCaseToUnderscore(field.getName());
+            columnName = StringUtils.humpToUnderline(field.getName());
         } else {
             columnName = column.value();
         }

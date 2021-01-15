@@ -7,6 +7,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StringUtils {
+    public static final Pattern humpPattern = Pattern.compile("[A-Z]");
+    public static final Pattern underlinePattern = Pattern.compile("_(\\w)");
+
     public static String join(CharSequence delimiter, CharSequence prefix, CharSequence suffix, Collection<String> source) {
         StringJoiner joiner = new StringJoiner(delimiter, prefix, suffix);
         for (String s : source) {
@@ -31,8 +34,8 @@ public class StringUtils {
         return join(delimiter, Arrays.asList(source));
     }
 
-    public static String camelCaseToUnderscore(String str) {
-        Matcher matcher = Pattern.compile("[A-Z]").matcher(str);
+    public static String humpToUnderline(String str) {
+        Matcher matcher = humpPattern.matcher(str);
         StringBuffer sb = new StringBuffer();
         while (matcher.find()) {
             matcher.appendReplacement(sb, "_" + matcher.group(0).toLowerCase());
@@ -41,4 +44,13 @@ public class StringUtils {
         return sb.toString();
     }
 
+    public static String underlineToHump(String str) {
+        Matcher matcher = Pattern.compile("_(\\w)").matcher(str);
+        StringBuffer sb = new StringBuffer();
+        while (matcher.find()) {
+            matcher.appendReplacement(sb, matcher.group(1).toLowerCase());
+        }
+        matcher.appendTail(sb);
+        return sb.toString();
+    }
 }

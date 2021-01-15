@@ -1,6 +1,9 @@
 package cn.org.rookie.mapper.entity;
 
-import cn.org.rookie.mapper.annotation.*;
+import cn.org.rookie.mapper.annotation.JoinColumn;
+import cn.org.rookie.mapper.annotation.JoinTable;
+import cn.org.rookie.mapper.annotation.Table;
+import cn.org.rookie.mapper.annotation.Transient;
 import cn.org.rookie.mapper.utils.StringUtils;
 
 import java.lang.annotation.Annotation;
@@ -18,7 +21,7 @@ public class TableInfo {
     public TableInfo(Class type) {
         Annotation table = type.getAnnotation(Table.class);
         if (table instanceof Table) {
-            tableName = StringUtils.camelCaseToUnderscore(((Table) table).value());
+            tableName = StringUtils.humpToUnderline(((Table) table).value());
         } else {
             tableName = type.getSimpleName();
         }

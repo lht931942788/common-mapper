@@ -20,7 +20,7 @@ public class JoinColumnInfo {
         tableName = joinColumn.tableName();
         fieldName = field.getName();
         if ("".equals(joinColumn.column())) {
-            columnName = StringUtils.camelCaseToUnderscore(fieldName);
+            columnName = StringUtils.humpToUnderline(fieldName);
         } else {
             columnName = joinColumn.column();
         }

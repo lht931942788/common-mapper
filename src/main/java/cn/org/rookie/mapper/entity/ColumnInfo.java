@@ -17,7 +17,7 @@ public class ColumnInfo {
         Column column = field.getAnnotation(Column.class);
         fieldName = field.getName();
         if (column == null || "".equals(column.value())) {
-            columnName = StringUtils.camelCaseToUnderscore(field.getName());
+            columnName = StringUtils.humpToUnderline(field.getName());
             if (column != null) {
                 primary = column.primary();
             }
