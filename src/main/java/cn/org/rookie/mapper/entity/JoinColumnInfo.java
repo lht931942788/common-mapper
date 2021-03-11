@@ -2,11 +2,12 @@ package cn.org.rookie.mapper.entity;
 
 import cn.org.rookie.mapper.annotation.Association;
 import cn.org.rookie.mapper.annotation.JoinColumn;
-import cn.org.rookie.mapper.utils.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class JoinColumnInfo {
 
@@ -20,7 +21,7 @@ public class JoinColumnInfo {
         tableName = joinColumn.tableName();
         fieldName = field.getName();
         if ("".equals(joinColumn.column())) {
-            columnName = StringUtils.humpToUnderline(fieldName);
+            columnName = humpToUnderline(fieldName);
         } else {
             columnName = joinColumn.column();
         }
@@ -40,6 +41,26 @@ public class JoinColumnInfo {
 
     public String getColumnName() {
         return columnName;
+    }
+
+    private static String humpToUnderline(String str) {
+        Matcher matcher = Pattern.compile("[A-Z]").matcher(str);
+        StringBuffer sb = new StringBuffer();
+        while (matcher.find()) {
+            matcher.appendReplacement(sb, "_" + matcher.group(0).toLowerCase());
+        }
+        matcher.appendTail(sb);
+        return sb.toString();
+    }
+
+    private static String underlineToHump(String str) {
+        Matcher matcher = Pattern.compile("_(\\w)").matcher(str);
+        StringBuffer sb = new StringBuffer();
+        while (matcher.find()) {
+            matcher.appendReplacement(sb, matcher.group(1).toLowerCase());
+        }
+        matcher.appendTail(sb);
+        return sb.toString();
     }
 
     public List<AssociationInfo> getAssociations() {

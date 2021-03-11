@@ -1,12 +1,18 @@
+/*
 package cn.org.rookie.mapper.interceptor;
 
+import cn.org.rookie.jeesdp.mapper.BaseMapper;
+import cn.org.rookie.jeesdp.mapper.annotation.Association;
+import cn.org.rookie.jeesdp.mapper.annotation.JoinTable;
+import cn.org.rookie.jeesdp.mapper.sql.where.Wrapper;
+import cn.org.rookie.jeesdp.mapper.utils.JoinTableFlag;
 import cn.org.rookie.mapper.BaseMapper;
-import cn.org.rookie.mapper.annotation.JoinTable;
-import cn.org.rookie.mapper.sql.where.Wrapper;
-import cn.org.rookie.mapper.utils.JoinTableFlag;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;
-import org.apache.ibatis.plugin.*;
+import org.apache.ibatis.plugin.Interceptor;
+import org.apache.ibatis.plugin.Intercepts;
+import org.apache.ibatis.plugin.Invocation;
+import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeansException;
@@ -23,6 +29,15 @@ import java.util.Properties;
 public class JoinTableInterceptor implements Interceptor, ApplicationContextAware {
 
     private ApplicationContext applicationContext;
+
+    */
+/**
+ * 注解配置分步查询
+ *
+ * @param invocation mybatis
+ * @return 返回分步查询的结果集
+ *//*
+
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
@@ -42,16 +57,20 @@ public class JoinTableInterceptor implements Interceptor, ApplicationContextAwar
                     JoinTable joinTable = field.getAnnotation(JoinTable.class);
                     if (joinTable != null) {
                         field.setAccessible(true);
-                        BaseMapper<?, ?> baseMapper = (BaseMapper<?, ?>) applicationContext.getBean(joinTable.mappedClass());
+                        BaseMapper<?, ?> baseMapper = applicationContext.getBean(joinTable.mappedClass());
                         list.forEach(row -> {
                             try {
-                                //TODO 加查询条件
                                 Wrapper wrapper = Wrapper.build();
-                                Field f = row.getClass().getField("");
-                                Object obj = f.get(row);
-                                wrapper.eq(f.getName(), obj);
-                                field.set(row, baseMapper.selectList(wrapper));
-                            } catch (IllegalAccessException | NoSuchFieldException e) {
+                                Association[] associations = joinTable.joinColumn().relations();
+                                for (Association association : associations) {
+                                    wrapper.eq(association.association(), field.get(association.target()));
+                                }
+                                if (joinTable.isCollection()) {
+                                    field.set(row, baseMapper.selectList(wrapper));
+                                } else {
+                                    field.set(row, baseMapper.selectOne(wrapper));
+                                }
+                            } catch (IllegalAccessException e) {
                                 e.printStackTrace();
                             }
                         });
@@ -77,3 +96,4 @@ public class JoinTableInterceptor implements Interceptor, ApplicationContextAwar
         this.applicationContext = applicationContext;
     }
 }
+*/

@@ -1,6 +1,6 @@
-package cn.org.rookie.mapper.sql.where;
+package cn.org.rookie.mapper.sql;
 
-import cn.org.rookie.mapper.sql.where.condition.*;
+import cn.org.rookie.mapper.sql.condition.*;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class Wrapper {
             try {
                 Object o = field.get(entity);
                 if (o != null && !"".equals(o)) {
-                    wrapper.eq("\"" + name + "\"", o);
+                    wrapper.equal("\"" + name + "\"", o);
                 }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
@@ -43,77 +43,56 @@ public class Wrapper {
         return wrapper;
     }
 
-    public Map<String, Object> getParams() {
-        return params;
-    }
 
-    public List<Condition> getConditions() {
-        return conditions;
-    }
-
-    public List<String> getOrder() {
-        return orders;
-    }
-
-    public void setOrder(List<String> orders) {
-        this.orders = orders;
-    }
-
-    private Wrapper addCondition(Condition condition, boolean isSharp) {
+    private Wrapper add(String columnName, Object param, Condition condition, boolean isSharp) {
         if (!isSharp) {
             condition.setPrefix("$");
         }
+        params.put(columnName, param);
+        condition.setColumnName(columnName);
         condition.setIsAnd(isAnd);
         conditions.add(condition);
         return this;
     }
 
-    private void putParam(String columnName, Object param) {
-        params.put(columnName, param);
-    }
-
-    private Wrapper addCondition(Condition condition) {
+    private Wrapper add(String columnName, Condition condition) {
+        condition.setColumnName(columnName);
         condition.setIsAnd(isAnd);
         conditions.add(condition);
         return this;
     }
 
-    public Wrapper eq(String columnName, Object param) {
-        putParam(columnName, param);
-        return addCondition(new Eq(columnName), true);
+
+    public Wrapper equal(String columnName, Object param) {
+        return add(columnName, param, new Equal(), true);
     }
 
-    public Wrapper notEq(String columnName, Object param) {
-        params.put(columnName, param);
-        return addCondition(new NotEq(columnName), true);
+    public Wrapper notEqual(String columnName, Object param) {
+        return add(columnName, param, new NotEqual(), true);
     }
 
-    public Wrapper lt(String columnName, Object param) {
-        params.put(columnName, param);
-        return addCondition(new Lt(columnName), true);
+    public Wrapper less(String columnName, Object param) {
+        return add(columnName, param, new Less(), true);
     }
 
-    public Wrapper gt(String columnName, Object param) {
-        params.put(columnName, param);
-        return addCondition(new Gt(columnName), true);
+    public Wrapper greater(String columnName, Object param) {
+        return add(columnName, param, new Greater(), true);
     }
 
     public Wrapper like(String columnName, Object param) {
-        params.put(columnName, param);
-        return addCondition(new Like(columnName), false);
+        return add(columnName, param, new Like(), false);
     }
 
     public Wrapper in(String columnName, Object[] param) {
-        params.put(columnName, param);
-        return addCondition(new In(columnName), true);
+        return add(columnName, param, new In(), true);
     }
 
     public Wrapper isNull(String columnName) {
-        return addCondition(new IsNull(columnName));
+        return add(columnName, new IsNull());
     }
 
     public Wrapper isNotNull(String columnName) {
-        return addCondition(new IsNotNull(columnName));
+        return add(columnName, new IsNotNull());
     }
 
     public Wrapper order(String order) {
@@ -129,6 +108,22 @@ public class Wrapper {
     public Wrapper or() {
         isAnd = false;
         return this;
+    }
+
+    public Map<String, Object> getParams() {
+        return params;
+    }
+
+    public List<Condition> getConditions() {
+        return conditions;
+    }
+
+    public List<String> getOrder() {
+        return orders;
+    }
+
+    public void orderBy(List<String> orders) {
+        this.orders = orders;
     }
 }
 

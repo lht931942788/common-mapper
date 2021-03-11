@@ -1,10 +1,6 @@
-package cn.org.rookie.mapper.sql.where;
+package cn.org.rookie.mapper.sql;
 
 public abstract class SingleCondition extends Condition {
-
-    public SingleCondition(String columnName) {
-        super(columnName);
-    }
 
 
     public String render() {

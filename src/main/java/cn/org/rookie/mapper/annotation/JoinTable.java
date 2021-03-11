@@ -12,4 +12,8 @@ import java.lang.annotation.Target;
 public @interface JoinTable {
 
     Class<? extends BaseMapper<?, ?>> mappedClass();
+
+    JoinColumn joinColumn();
+
+    boolean isCollection() default true;
 }

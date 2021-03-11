@@ -1,14 +1,12 @@
 package cn.org.rookie.mapper.sql;
 
-import cn.org.rookie.mapper.sql.where.Condition;
-import cn.org.rookie.mapper.sql.where.Wrapper;
 import cn.org.rookie.mapper.entity.*;
-import cn.org.rookie.mapper.utils.StringUtils;
-import org.apache.ibatis.jdbc.SQL;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.StringJoiner;
 
-public class SQLBuilder {
+public class SQL {
 
     private final TableInfo tableInfo;
     private final Class<?> type;
@@ -18,11 +16,11 @@ public class SQLBuilder {
     private final String SELECT;
     private String sql;
 
-    public SQLBuilder(Class<?> type) {
-        final SQL insert = new SQL();
-        final SQL delete = new SQL();
-        final SQL update = new SQL();
-        final SQL select = new SQL();
+    public SQL(Class<?> type) {
+        final org.apache.ibatis.jdbc.SQL insert = new org.apache.ibatis.jdbc.SQL();
+        final org.apache.ibatis.jdbc.SQL delete = new org.apache.ibatis.jdbc.SQL();
+        final org.apache.ibatis.jdbc.SQL update = new org.apache.ibatis.jdbc.SQL();
+        final org.apache.ibatis.jdbc.SQL select = new org.apache.ibatis.jdbc.SQL();
 
         this.tableInfo = new TableInfo(type);
         this.type = type;
@@ -43,26 +41,21 @@ public class SQLBuilder {
         select.FROM(tableName);
         select.SELECT(select(tableName, primaryColumnName, primaryFieldName));
 
-        for (int i = 0; i < columns.size(); i++) {
-            ColumnInfo columnInfo = columns.get(i);
+        int size = columns.size();
+        for (ColumnInfo columnInfo : columns) {
             String columnName = columnInfo.getColumnName();
             String fieldName = columnInfo.getFieldName();
-            String separator = ",";
-            if (i == 0) {
-                separator = "";
-            }
+            value.append(ifScript(fieldName, columnName));
+            values.append(ifScript(fieldName, sharp(fieldName)));
 
-            value.append(ifScript(fieldName, columnName, separator));
-            values.append(ifScript(fieldName, sharp(fieldName), separator));
-
-            set.append(ifScript(fieldName, set(columnName, fieldName), separator));
+            set.append(ifScript(fieldName, set(columnName, fieldName)));
 
             select.SELECT(select(tableName, columnName, fieldName));
         }
         insert.VALUES(primaryColumnName, sharp(primaryFieldName));
-        insert.VALUES(value.toString(), values.toString());
+        insert.VALUES(trimScript(value.toString()), trimScript(values.toString()));
 
-        update.SET(set.toString());
+        update.SET(trimScript(set.toString()));
 
         for (JoinColumnInfo joinColumnInfo : tableInfo.getJoinColumns()) {
             String joinTableName = joinColumnInfo.getTableName();
@@ -80,32 +73,100 @@ public class SQLBuilder {
         this.SELECT = select.toString();
     }
 
-    public SQLBuilder insert() {
+    private static String join(Collection<String> source) {
+        StringJoiner joiner = new StringJoiner(",", " ORDER BY ", "");
+        for (String s : source) {
+            joiner.add(s);
+        }
+        return joiner.toString();
+    }
+
+    public SQL insert() {
         sql = INSERT;
         return this;
     }
 
-    public SQLBuilder delete() {
+    public SQL delete() {
         sql = DELETE;
         return this;
     }
 
-    public SQLBuilder update() {
+    public SQL update() {
         sql = UPDATE;
         return this;
     }
 
-    public SQLBuilder select() {
+    public SQL select() {
         sql = SELECT;
         return this;
     }
 
-    public SQLBuilder byPrimary() {
+    public SQL byPrimary() {
         sql += (" WHERE " + condition(getTableName(), getPrimaryColumnName(), "id"));
         return this;
     }
 
-    public SQLBuilder where(Wrapper wrapper) {
+    public Class<?> getType() {
+        return type;
+    }
+
+    public TableInfo getTableInfo() {
+        return tableInfo;
+    }
+
+    public String getTableName() {
+        return tableInfo.getTableName();
+    }
+
+    public PrimaryInfo getPrimaryInfo() {
+        return tableInfo.getPrimaryInfo();
+    }
+
+    public String getPrimaryColumnName() {
+        return getPrimaryInfo().getColumnName();
+    }
+
+    public String getPrimaryFieldName() {
+        return getPrimaryInfo().getFieldName();
+    }
+
+    private String select(String tableName, String columnName, String fieldName) {
+        return String.format("%s.%s \"%s\"", tableName, columnName, fieldName);
+    }
+
+    private String sharp(String fieldName) {
+        return String.format("#{%s}", fieldName);
+    }
+
+    private String set(String columnName, String fieldName) {
+        return String.format("%s = #{%s}", columnName, fieldName);
+    }
+
+    private String setScript(String content) {
+        return String.format("<set>%s</set>", content);
+    }
+
+    private String trimScript(String content) {
+        return String.format("<trim prefix=\"\" suffixOverrides=\"%s\">%s</trim>", ",", content);
+    }
+
+    private String ifScript(String fieldName, String content) {
+        return String.format("<if test=\"%s != null\">%s</if>", fieldName, content);
+    }
+
+    private String condition(String tableName, String columnName, String fieldName) {
+        return String.format("%s.%s = #{%s}", tableName, columnName, fieldName);
+    }
+
+    private String condition(String tableName, String left, String joinTableName, String right) {
+        return String.format("%s.%s = %s.%s", tableName, left, joinTableName, right);
+    }
+
+    public String build() {
+        return "<script>" + sql + "</script>";
+    }
+
+    public SQL where(Wrapper wrapper) {
         StringBuilder where = new StringBuilder();
         if (wrapper != null) {
             List<Condition> conditions = wrapper.getConditions();
@@ -130,59 +191,10 @@ public class SQLBuilder {
             }
 
             if (order.size() > 0) {
-                sql += StringUtils.join(",", " ORDER BY ", "", order);
+                sql += join(order);
             }
         }
         return this;
     }
-
-    public Class<?> getType() {
-        return type;
-    }
-
-    private String getTableName() {
-        return tableInfo.getTableName();
-    }
-
-    private PrimaryInfo getPrimaryInfo() {
-        return tableInfo.getPrimaryInfo();
-    }
-
-    private String getPrimaryColumnName() {
-        return getPrimaryInfo().getColumnName();
-    }
-
-    private String getPrimaryFieldName() {
-        return getPrimaryInfo().getFieldName();
-    }
-
-    private String select(String tableName, String columnName, String fieldName) {
-        return String.format("%s.%s \"%s\"", tableName, columnName, fieldName);
-    }
-
-    private String sharp(String fieldName) {
-        return String.format("#{%s}", fieldName);
-    }
-
-    private String set(String columnName, String fieldName) {
-        return String.format("%s = #{%s}", columnName, fieldName);
-    }
-
-    private String ifScript(String fieldName, String content, String separator) {
-        return String.format("<if test=\"%s != null and %s != ''\">%s%s</if>", fieldName, fieldName, separator, content);
-    }
-
-    private String condition(String tableName, String columnName, String fieldName) {
-        return String.format("%s.%s = #{%s}", tableName, columnName, fieldName);
-    }
-
-    private String condition(String tableName, String left, String joinTableName, String right) {
-        return String.format("%s.%s = %s.%s", tableName, left, joinTableName, right);
-    }
-
-    public String build() {
-        return "<script>" + sql + "</script>";
-    }
-
 
 }

@@ -1,11 +1,8 @@
-package cn.org.rookie.mapper.sql.where.condition;
+package cn.org.rookie.mapper.sql.condition;
 
-import cn.org.rookie.mapper.sql.where.Condition;
+import cn.org.rookie.mapper.sql.Condition;
 
 public class In extends Condition {
-    public In(String columnName) {
-        super(columnName);
-    }
 
     @Override
     public String render() {

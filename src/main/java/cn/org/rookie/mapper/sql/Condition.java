@@ -1,13 +1,9 @@
-package cn.org.rookie.mapper.sql.where;
+package cn.org.rookie.mapper.sql;
 
 public abstract class Condition {
     protected String columnName;
     protected Boolean isAnd;
     protected String prefix = "#";
-
-    public Condition(String columnName) {
-        this.columnName = columnName;
-    }
 
     public Boolean isAnd() {
         return isAnd;
@@ -27,4 +23,11 @@ public abstract class Condition {
         this.prefix = prefix;
     }
 
+    public String getColumnName() {
+        return columnName;
+    }
+
+    public void setColumnName(String columnName) {
+        this.columnName = columnName;
+    }
 }
