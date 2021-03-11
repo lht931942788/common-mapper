@@ -1,8 +1,7 @@
-package cn.org.rookie.mapper.utils;
+package cn.org.rookie.mapper.sql;
 
 import cn.org.rookie.mapper.entity.PrimaryInfo;
 import cn.org.rookie.mapper.entity.TableInfo;
-import cn.org.rookie.mapper.sql.SQL;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

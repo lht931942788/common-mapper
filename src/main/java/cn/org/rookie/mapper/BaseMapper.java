@@ -1,7 +1,7 @@
 package cn.org.rookie.mapper;
 
+import cn.org.rookie.mapper.sql.SqlBuilderContext;
 import cn.org.rookie.mapper.sql.Wrapper;
-import cn.org.rookie.mapper.utils.SqlBuilderContext;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
